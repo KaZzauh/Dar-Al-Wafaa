@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>School Management | Smart Analytics & Reports</title>
+
+    <link rel="icon" id="dynamicFavicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%236c3a9d'/%3E%3Ctext x='32' y='42' font-size='36' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'%3ED%3C/text%3E%3C/svg%3E" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="loginOverlay">
+        <div class="login-card">
+            <div class="login-logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>Dar Al-Wafaa</h1>
+            <p class="login-sub">School Management System</p>
+            <form id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="loginUsername"><i class="fas fa-user" style="margin-right:6px;color:#8e44ad;"></i> Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter username" required autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword"><i class="fas fa-lock" style="margin-right:6px;color:#8e44ad;"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required autocomplete="off" />
+                </div>
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+                <div class="login-error" id="loginError"></div>
+                <div class="login-footer">
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;">
+                        <a href="teacher.html" class="teacher-link"><i class="fas fa-chalkboard-user"></i> Teacher Login</a>
+                        <a href="accountant.html" class="accountant-link"><i class="fas fa-calculator"></i> Accountant Login</a>
+                    </div>
+                    <div>Developed By: <strong>Kamil</strong> / <strong>Graphics</strong></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header" id="sidebarHeader">
+            <img class="logo-img" id="sidebarLogo" src="" alt="School Logo" style="display:none;" />
+            <div class="logo-text" id="sidebarSchoolName">🎓 Dar Al-Wafaa</div>
+            <div class="logo-sub">School Management System</div>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-item active" data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</div>
+            <div class="nav-item" data-tab="analytics" data-role="admin"><i class="fas fa-brain"></i> Smart Analytics</div>
+            <div class="nav-item" data-tab="classes"><i class="fas fa-book-open"></i> <span id="navClassesLabel">Classes</span></div>
+            <div class="nav-item" data-tab="subjects"><i class="fas fa-book"></i> Subjects</div>
+            <div class="nav-item" data-tab="exams"><i class="fas fa-file-alt"></i> Exams & Reports</div>
+            <div class="nav-item" data-tab="teachers" data-role="admin"><i class="fas fa-chalkboard-user"></i> Manage Teachers</div>
+            <div class="nav-item" data-tab="students"><i class="fas fa-users"></i> <span id="navStudentsLabel">Manage Students</span></div>
+            <div class="nav-item" data-tab="attendance"><i class="fas fa-clipboard-check"></i> Attendance</div>
+            <div class="nav-item" data-tab="staffattendance" data-role="admin"><i class="fas fa-user-clock"></i> Teacher Attendance</div>
+            <div class="nav-item" data-tab="payments" data-role="admin"><i class="fas fa-money-bill-wave"></i> Payments</div>
+            <div class="nav-item" data-tab="timetable"><i class="fas fa-clock"></i> <span id="navTimetableLabel">Time Table</span></div>
+            <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i> Settings</div>
+        </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="dashboard-container">
+
+            <div class="top-header">
+                <div class="top-header-left">
+                    <button class="hamburger-toggle" id="hamburgerToggle" aria-label="Toggle navigation menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title" id="pageTitle">📊 <span id="pageTitleSpan">Dar Al-Wafaa</span> · Admin</div>
+                </div>
+                <div class="top-header-right">
+                    <div class="user-badge">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userDisplayName">Admin</span>
+                        <span class="role-badge admin" id="userRoleBadge">ADMIN</span>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div id="tabDashboard" class="tab-content active">
+                <div class="header">
+                    <h1>Administrator Dashboard</h1>
+                    <p>Welcome back! Here's what's happening at <span id="dashboardSchoolName">Dar-Al Wafaa</span> today.</p>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card-title">Total Students</div>
+                        <div class="stat-card-value" id="totalStudents">0</div>
+                        <div class="stat-card-change">+12 this month</div>
+                        <div class="stat-card-icon"><i class="fas fa-user-graduate"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-title">Total Teachers</div>
+                        <div class="stat-card-value" id="totalTeachers">0</div>
+                        <div class="stat-card-change">+1 this month</div>
+                        <div class="stat-card-icon"><i class="fas fa-chalkboard-user"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-title">Active Classes</div>
+                        <div class="stat-card-value" id="totalCourses">0</div>
+                        <div class="stat-card-change">All levels</div>
+                        <div class="stat-card-icon"><i class="fas fa-book-open"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-title">Total Money Collected</div>
+                        <div class="stat-card-value" id="totalMoneyCollected">GH₵0.00</div>
+                        <div class="stat-card-change">From all payments</div>
+                        <div class="stat-card-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-line"></i> Enrollment Trend (Last 12 Months)</h3>
+                        <div class="chart-container"><canvas id="enrollmentChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-line"></i> Revenue Trend (Last 12 Months)</h3>
+                        <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-pie"></i> Class Level Distribution</h3>
+                        <div class="chart-container"><canvas id="classDistributionChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-pie"></i> Payment Methods</h3>
+                        <div class="chart-container"><canvas id="paymentMethodChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="content-sections">
+                    <div class="section"><h2>Recent Enrollments</h2><div id="enrollmentsList"></div></div>
+                    <div class="section"><h2>Teaching Staff</h2><div id="staffList"></div></div>
+                </div>
+
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="actions-grid">
+                        <div class="action-card blue" onclick="switchTab('classes')">
+                            <i class="fas fa-book-open action-icon"></i>
+                            <div class="action-label">Manage Classes</div>
+                            <div class="action-desc">View and manage all classes</div>
+                        </div>
+                        <div class="action-card green" onclick="switchTab('students')">
+                            <i class="fas fa-users action-icon"></i>
+                            <div class="action-label">Manage Students</div>
+                            <div class="action-desc">Open the student management page</div>
+                        </div>
+                        <div class="action-card purple" onclick="switchTab('analytics')">
+                            <i class="fas fa-brain action-icon"></i>
+                            <div class="action-label">Smart Analytics</div>
+                            <div class="action-desc">View insights & reports</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabAnalytics" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1>Smart Analytics & Reports</h1>
+                        <p class="page-subtitle">Real-time insights, financial summaries, and academic intelligence</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="add-btn" id="refreshAnalyticsBtn" style="background:#27ae60;"><i class="fas fa-sync"></i> Refresh Data</button>
+                    </div>
+                </div>
+
+                <div class="analytics-insight-grid grid-6" id="insightGrid">
+                    <div class="insight-card">
+                        <div class="insight-value" id="insightRevenue">GH₵0</div>
+                        <div class="insight-label">Total Revenue</div>
+                        <span class="insight-trend up" id="insightRevenueTrend">↑ 12%</span>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-value" id="insightExpenses">GH₵0</div>
+                        <div class="insight-label">Total Expenses</div>
+                        <span class="insight-trend down" id="insightExpenseTrend">↑ 5%</span>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-value" id="insightNetIncome">GH₵0</div>
+                        <div class="insight-label">Net Income</div>
+                        <span class="insight-trend neutral">📊</span>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-value" id="insightOutstanding" style="color:#e74c3c;">GH₵0</div>
+                        <div class="insight-label">Total Outstanding</div>
+                        <span class="insight-trend neutral">⚠️</span>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-value" id="insightCollectionRate">0%</div>
+                        <div class="insight-label">Collection Rate</div>
+                        <span class="insight-trend neutral">🎯</span>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-value" id="insightStudents">0</div>
+                        <div class="insight-label">Active Students</div>
+                        <span class="insight-trend up" id="insightStudentTrend">↑ 8%</span>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-wallet"></i> Revenue vs Expenses (Last 12 Months)</h3>
+                        <div class="chart-container"><canvas id="revenueExpenseChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-bar"></i> Subject Performance</h3>
+                        <div class="chart-container"><canvas id="subjectPerformanceChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-pie"></i> Revenue by Fee Category</h3>
+                        <div class="chart-container"><canvas id="revenueByCategoryChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-bar"></i> Term-by-Term Revenue</h3>
+                        <div class="chart-container"><canvas id="termRevenueChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Outstanding by Class (Arrears)</h3>
+                        <div class="chart-container"><canvas id="arrearsByClassChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-tasks"></i> Fee Collection Progress</h3>
+                        <div class="chart-container"><canvas id="feeCollectionProgressChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="analytics-full-row">
+                    <div class="analytics-decision-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Academic Insights</h3>
+                        <div id="academicInsightsList">
+                            <div class="decision-item">
+                                <div class="decision-icon green"><i class="fas fa-check"></i></div>
+                                <div class="decision-text"><div class="title">Class Performance</div><div class="desc">Primary 3 has the highest grade average</div></div>
+                            </div>
+                            <div class="decision-item">
+                                <div class="decision-icon orange"><i class="fas fa-exclamation-triangle"></i></div>
+                                <div class="decision-text"><div class="title">Subject Performance</div><div class="desc">Mathematics needs improvement across JHS levels</div></div>
+                            </div>
+                            <div class="decision-item">
+                                <div class="decision-icon purple"><i class="fas fa-star"></i></div>
+                                <div class="decision-text"><div class="title">Top Performer</div><div class="desc">Abdullah Hassan – 92% overall average</div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analytics-decision-card">
+                        <h3><i class="fas fa-lightbulb"></i> Data-Driven Decisions</h3>
+                        <div id="decisionInsightsList">
+                            <div class="decision-item">
+                                <div class="decision-icon green"><i class="fas fa-check-circle"></i></div>
+                                <div class="decision-text"><div class="title">Enrollment Growth</div><div class="desc">+12 new students this month. Consider expanding Primary 3 capacity.</div></div>
+                                <button class="decision-action" onclick="switchTab('students')">Act</button>
+                            </div>
+                            <div class="decision-item">
+                                <div class="decision-icon orange"><i class="fas fa-coins"></i></div>
+                                <div class="decision-text"><div class="title">Budget Alert</div><div class="desc">Tuition budget at 85% usage. Review expenses.</div></div>
+                                <button class="decision-action" onclick="switchTab('payments')">Review</button>
+                            </div>
+                            <div class="decision-item">
+                                <div class="decision-icon purple"><i class="fas fa-users"></i></div>
+                                <div class="decision-text"><div class="title">Staff Engagement</div><div class="desc">All teachers are actively assigned to classes.</div></div>
+                                <button class="decision-action" onclick="switchTab('teachers')">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-bar"></i> Subject Performance (Detailed)</h3>
+                        <div class="chart-container"><canvas id="subjectPerformanceChartDetailed"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-pie-chart"></i> Budget Utilization</h3>
+                        <div class="chart-container"><canvas id="budgetUtilizationChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="exam-analytics-section" id="examAnalyticsSection">
+                    <div class="section-title">
+                        <i class="fas fa-graduation-cap"></i>
+                        Exam Performance Analytics
+                        <span style="font-size:0.8rem;font-weight:400;color:#8c7da1;margin-left:12px;">
+                            <i class="fas fa-sync-alt" id="refreshExamAnalytics" style="cursor:pointer;color:#8e44ad;"></i>
+                            &nbsp;|&nbsp; <span id="examAnalyticsCount">0</span> exams analyzed
+                        </span>
+                    </div>
+
+                    <div class="exam-metric-grid" id="examMetricGrid">
+                        <div class="exam-metric-card">
+                            <div class="metric-number" id="examAvgScore">—</div>
+                            <div class="metric-label">Overall Average Score</div>
+                            <span class="metric-sub" id="examAvgSub">Across all exams</span>
+                        </div>
+                        <div class="exam-metric-card">
+                            <div class="metric-number" id="examPassRate">—</div>
+                            <div class="metric-label">Pass Rate</div>
+                            <span class="metric-sub" id="examPassSub">≥ 50% of max score</span>
+                        </div>
+                        <div class="exam-metric-card">
+                            <div class="metric-number" id="examFailRate">—</div>
+                            <div class="metric-label">Fail Rate</div>
+                            <span class="metric-sub danger" id="examFailSub">&lt; 50% of max score</span>
+                        </div>
+                        <div class="exam-metric-card">
+                            <div class="metric-number" id="examTopPerformer">—</div>
+                            <div class="metric-label">Top Performer</div>
+                            <span class="metric-sub" id="examTopSub">Highest average</span>
+                        </div>
+                    </div>
+
+                    <div class="exam-analytics-row">
+                        <div class="exam-analytics-card">
+                            <h4><i class="fas fa-chart-line" style="color:#8e44ad;"></i> Performance Trend (by Exam Date)</h4>
+                            <div class="chart-container"><canvas id="examPerformanceTrendChart"></canvas></div>
+                        </div>
+                        <div class="exam-analytics-card">
+                            <h4><i class="fas fa-chart-bar" style="color:#8e44ad;"></i> Subject-Wise Performance</h4>
+                            <div class="chart-container"><canvas id="examSubjectPerformanceChart"></canvas></div>
+                        </div>
+                    </div>
+
+                    <div class="exam-analytics-row">
+                        <div class="exam-analytics-card">
+                            <h4><i class="fas fa-chart-bar" style="color:#8e44ad;"></i> Class-Wise Performance</h4>
+                            <div class="chart-container"><canvas id="examClassPerformanceChart"></canvas></div>
+                        </div>
+                        <div class="exam-analytics-card">
+                            <h4><i class="fas fa-chart-pie" style="color:#8e44ad;"></i> Pass / Fail Distribution</h4>
+                            <div class="chart-container"><canvas id="examPassFailChart"></canvas></div>
+                        </div>
+                    </div>
+
+                    <div class="exam-rankings-grid">
+                        <div class="exam-rankings-card">
+                            <h4><i class="fas fa-trophy" style="color:#f39c12;"></i> Top Performing Students</h4>
+                            <div id="topStudentsList">
+                                <div class="no-exam-data-msg">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <h4>No data yet</h4>
+                                    <p>Complete exams and record grades to see top performers.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exam-rankings-card">
+                            <h4><i class="fas fa-ranking-star" style="color:#8e44ad;"></i> Class Rankings (Average Score)</h4>
+                            <div id="classRankingsList">
+                                <div class="no-exam-data-msg">
+                                    <i class="fas fa-school"></i>
+                                    <h4>No data yet</h4>
+                                    <p>Record exam grades to see class performance rankings.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exam-analytics-section" id="attendanceAnalyticsSection" style="margin-top:40px;">
+                    <div class="section-title">
+                        <i class="fas fa-clipboard-check"></i>
+                        Attendance Analytics
+                        <span style="font-size:0.8rem;font-weight:400;color:#8c7da1;margin-left:12px;">
+                            <i class="fas fa-sync-alt" id="refreshAttendanceAnalytics" style="cursor:pointer;color:#8e44ad;"></i>
+                            &nbsp;|&nbsp; <span id="attendanceAnalyticsCount">0</span> records analyzed
+                        </span>
+                    </div>
+
+                    <div class="exam-metric-grid" id="attendanceMetricGrid">
+                        <div class="exam-metric-card">
+                            <div class="metric-number" id="attendanceOverallRate">—</div>
+                            <div class="metric-label">Overall Attendance Rate</div>
+                            <span class="metric-sub" id="attendanceOverallSub">Across all classes</span>
+                        </div>
+                        <div class="exam-metric-card">
+                            <div class="metric-number" id="attendanceTotalDays">—</div>
+                            <div class="metric-label">Days Marked</div>
+                            <span class="metric-sub" id="attendanceDaysSub">All records</span>
+                        </div>
+                        <div class="exam-metric-card">
+                            <div class="metric-number" id="attendanceTopClass" style="font-size:1.4rem;">—</div>
+                            <div class="metric-label">Best Attendance Class</div>
+                            <span class="metric-sub" id="attendanceTopClassSub">Highest rate</span>
+                        </div>
+                        <div class="exam-metric-card">
+                            <div class="metric-number" id="attendanceAtRiskCount">—</div>
+                            <div class="metric-label">Students at Risk</div>
+                            <span class="metric-sub danger" id="attendanceRiskSub">&lt; 75% attendance</span>
+                        </div>
+                    </div>
+
+                    <div class="exam-analytics-row">
+                        <div class="exam-analytics-card">
+                            <h4><i class="fas fa-chart-bar" style="color:#8e44ad;"></i> Attendance Rate by Class</h4>
+                            <div class="chart-container"><canvas id="attendanceClassChart"></canvas></div>
+                        </div>
+                        <div class="exam-analytics-card">
+                            <h4><i class="fas fa-chart-pie" style="color:#8e44ad;"></i> Present / Late / Absent Distribution</h4>
+                            <div class="chart-container"><canvas id="attendanceDistributionChart"></canvas></div>
+                        </div>
+                    </div>
+
+                    <div class="exam-analytics-row">
+                        <div class="exam-analytics-card">
+                            <h4><i class="fas fa-chart-line" style="color:#8e44ad;"></i> Daily Attendance Trend (Last 14 Days)</h4>
+                            <div class="chart-container"><canvas id="attendanceTrendChart"></canvas></div>
+                        </div>
+                        <div class="exam-rankings-card">
+                            <h4><i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i> Students Needing Attention</h4>
+                            <div id="attendanceAtRiskList">
+                                <div class="no-exam-data-msg">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <h4>No data yet</h4>
+                                    <p>Mark attendance to see students needing attention.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabClasses" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-book-open" style="color:#8e44ad;"></i> <span id="classesPageTitle">Class Management</span></h1>
+                        <p class="page-subtitle">View all classes grouped by academic level – click a level header to expand/collapse</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="add-btn admin-only" id="addClassBtn"><i class="fas fa-plus-circle"></i> Add Class</button>
+                        <button class="export-csv-btn" onclick="exportClassesCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="class-metric-row" id="classMetricsRow">
+                    <div class="class-metric-card">
+                        <div class="metric-number" id="classTotalCount">0</div>
+                        <div class="metric-label">Total Classes</div>
+                    </div>
+                    <div class="class-metric-card">
+                        <div class="metric-number" id="classActiveCount">0</div>
+                        <div class="metric-label">Active Classes</div>
+                    </div>
+                    <div class="class-metric-card">
+                        <div class="metric-number" id="classTotalStudents">0</div>
+                        <div class="metric-label">Total Students Enrolled</div>
+                    </div>
+                    <div class="class-metric-card">
+                        <div class="metric-number" id="classAvgSize">0</div>
+                        <div class="metric-label">Avg Students Per Class</div>
+                    </div>
+                </div>
+
+                <div class="panel-toolbar">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchClasses" placeholder="Search by class name or level..." />
+                    </div>
+                    <div class="toolbar-actions">
+                        <select id="classLevelFilter" class="select-filter">
+                            <option value="All">All Levels</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="Kindergarten">Kindergarten</option>
+                            <option value="KG">KG</option>
+                            <option value="Primary">Primary</option>
+                            <option value="Junior High School">Junior High School</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="classGroupsContainer"></div>
+
+                <div id="classRegisterView">
+                    <div class="page-header">
+                        <div>
+                            <h1 id="registerClassName">Class Name</h1>
+                            <p class="page-subtitle" id="registerSubtitle">Manage students and exams for this class</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="add-btn" style="background:#6c757d;" onclick="backToClasses()"><i class="fas fa-arrow-left"></i> Back</button>
+                        </div>
+                    </div>
+
+                    <div class="class-view-tabs">
+                        <button class="class-view-tab active" data-viewtab="students"><i class="fas fa-users"></i> Students</button>
+                        <button class="class-view-tab" data-viewtab="exams"><i class="fas fa-file-alt"></i> Exams</button>
+                    </div>
+
+                    <div class="class-view-tab-content active" id="viewTabStudents">
+                        <div class="table-card">
+                            <div class="table-title">
+                                <span>All Students in <span id="classStudentListName">—</span></span>
+                                <span id="classStudentCountBadge" class="badge">0</span>
+                            </div>
+                            <div class="table-wrapper">
+                                <table id="classStudentTable">
+                                    <thead><tr><th>#</th><th>Student Name</th><th>Age</th><th>Gender</th><th>Admission Date</th><th>Performance</th></tr></thead>
+                                    <tbody id="classStudentTbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="class-view-tab-content" id="viewTabExams">
+                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+                            <div>
+                                <span style="font-weight:600;font-size:1rem;">📝 Exams for <span id="classExamClassName">—</span></span>
+                                <span id="classExamCount" class="badge" style="margin-left:8px;">0</span>
+                            </div>
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                <button class="add-btn" onclick="openAddExamForClass()" style="font-size:0.85rem;padding:8px 16px;"><i class="fas fa-plus-circle"></i> Create Exam</button>
+                                <button class="add-btn admin-only" onclick="openPromoteModal()" style="background:#2980b9;font-size:0.85rem;padding:8px 16px;"><i class="fas fa-arrow-right"></i> Promote Students</button>
+                            </div>
+                        </div>
+
+                        <div class="table-card">
+                            <div class="table-title">
+                                <span>All Exams</span>
+                                <span id="classExamListBadge" class="badge">0</span>
+                            </div>
+                            <div class="class-exam-list" id="classExamList"></div>
+                        </div>
+
+                        <div id="classGradeEntry" style="display:none;margin-top:24px;">
+                            <div class="page-header" style="margin-bottom:12px;">
+                                <div>
+                                    <h3 style="font-size:1.2rem;color:#2c3e50;"><i class="fas fa-pencil-alt" style="color:#8e44ad;"></i> Enter Grades: <span id="classGradeExamName">—</span></h3>
+                                    <p class="page-subtitle">Search for a student and enter scores. Grades auto-save on change.</p>
+                                </div>
+                                <div class="page-actions">
+                                    <button class="add-btn" style="background:#6c757d;" onclick="closeClassGradeEntry()"><i class="fas fa-times"></i> Close</button>
+                                </div>
+                            </div>
+                            <div class="panel-toolbar">
+                                <div class="search-bar" style="max-width:300px;">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="classGradeSearch" placeholder="Search student..." />
+                                </div>
+                                <span id="classGradeEntryCount" class="badge">0 students</span>
+                            </div>
+                            <div class="table-card">
+                                <div class="table-wrapper">
+                                    <table id="classGradeEntryTable">
+                                        <thead><tr><th>#</th><th>Student Name</th><th>Score</th><th>Grade</th></tr></thead>
+                                        <tbody id="classGradeEntryTbody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="classExamReport" style="display:none;margin-top:24px;">
+                            <div class="page-header" style="margin-bottom:12px;">
+                                <div>
+                                    <h3 style="font-size:1.2rem;color:#2c3e50;"><i class="fas fa-chart-bar" style="color:#8e44ad;"></i> Exam Report: <span id="classReportExamName">—</span></h3>
+                                    <p class="page-subtitle">Performance summary for this exam</p>
+                                </div>
+                                <div class="page-actions">
+                                    <button class="add-btn" style="background:#6c757d;" onclick="closeClassExamReport()"><i class="fas fa-times"></i> Close</button>
+                                </div>
+                            </div>
+                            <div class="mini-report-grid" id="classReportStats">
+                                <div class="mini-report-item"><div class="value" id="classReportStudents">0</div><div class="label">Students</div></div>
+                                <div class="mini-report-item"><div class="value" id="classReportAvg">0%</div><div class="label">Average Score</div></div>
+                                <div class="mini-report-item"><div class="value" id="classReportHighest">0</div><div class="label">Highest</div></div>
+                                <div class="mini-report-item"><div class="value" id="classReportLowest">0</div><div class="label">Lowest</div></div>
+                            </div>
+                            <div class="table-card">
+                                <div class="table-title"><span>Grade Distribution</span><span class="badge">Performance</span></div>
+                                <div class="table-wrapper">
+                                    <table id="classReportGradeTable">
+                                        <thead><tr><th>Grade</th><th>Range</th><th>Students</th><th>Percentage</th></tr></thead>
+                                        <tbody id="classReportGradeTbody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabSubjects" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-book" style="color:#8e44ad;"></i> Subject Management</h1>
+                        <p class="page-subtitle">Subjects are grouped by academic level – add, edit, or delete subjects per level</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="add-btn admin-only" id="addSubjectBtn"><i class="fas fa-plus-circle"></i> Add Subject</button>
+                        <button class="export-csv-btn" onclick="exportSubjectsCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="panel-toolbar">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchSubjects" placeholder="Search by subject name or code..." />
+                    </div>
+                </div>
+
+                <div id="subjectCardsContainer"></div>
+            </div>
+
+            <div id="tabExams" class="tab-content">
+                <div class="page-header">
+                    <div><h1><i class="fas fa-file-alt" style="color:#8e44ad;"></i> Exams & Reports</h1><p class="page-subtitle">Create exams, record grades, and view performance reports</p></div>
+                    <div class="page-actions">
+                        <button class="add-btn" id="addExamBtn"><i class="fas fa-plus-circle"></i> Create Exam</button>
+                        <button class="add-btn" id="refreshExamsBtn" style="background:#27ae60;"><i class="fas fa-sync"></i> Refresh</button>
+                        <button class="export-csv-btn" onclick="exportExamsCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+                    <div class="exam-stat-card">
+                        <div class="stat-number" id="examTotalCount">0</div>
+                        <div class="stat-label">Total Exams</div>
+                        <span class="stat-sub">All exams</span>
+                    </div>
+                    <div class="exam-stat-card">
+                        <div class="stat-number" id="examCompletedCount">0</div>
+                        <div class="stat-label">Completed</div>
+                        <span class="stat-sub">With grades</span>
+                    </div>
+                    <div class="exam-stat-card">
+                        <div class="stat-number" id="examUpcomingCount">0</div>
+                        <div class="stat-label">Upcoming</div>
+                        <span class="stat-sub">Scheduled</span>
+                    </div>
+                    <div class="exam-stat-card">
+                        <div class="stat-number" id="examAvgScoreGlobal">0%</div>
+                        <div class="stat-label">Avg Score</div>
+                        <span class="stat-sub">Across all exams</span>
+                    </div>
+                </div>
+
+                <div class="table-card" id="examGroupsWrapper">
+                    <div class="table-title">
+                        <span>📚 All Exams — Grouped by Class</span>
+                        <span id="examCountBadge" class="badge">0</span>
+                    </div>
+                    <div id="examGroupsContainer"></div>
+                </div>
+
+                <div id="gradeEntrySection" style="margin-top:24px;display:none;">
+                    <div class="page-header" style="margin-bottom:16px;">
+                        <div>
+                            <h2 style="font-size:1.3rem;color:#2c3e50;"><i class="fas fa-pencil-alt" style="color:#8e44ad;"></i> Enter Grades: <span id="gradeEntryExamName">—</span></h2>
+                            <p class="page-subtitle">Search for a student and enter scores. Grades auto-save on change.</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="add-btn" style="background:#6c757d;" onclick="closeGradeEntry()"><i class="fas fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                    <div class="panel-toolbar">
+                        <div class="search-bar" style="max-width:300px;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="gradeEntrySearch" placeholder="Search student..." />
+                        </div>
+                        <span id="gradeEntryCount" class="badge">0 students</span>
+                    </div>
+                    <div class="table-card">
+                        <div class="table-wrapper">
+                            <table id="gradeEntryTable">
+                                <thead><tr><th>#</th><th>Student Name</th><th>Score</th><th>Grade</th></tr></thead>
+                                <tbody id="gradeEntryTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="examReportSection" style="margin-top:24px;display:none;">
+                    <div class="page-header" style="margin-bottom:16px;">
+                        <div>
+                            <h2 style="font-size:1.3rem;color:#2c3e50;"><i class="fas fa-chart-bar" style="color:#8e44ad;"></i> Exam Report: <span id="reportExamName">—</span></h2>
+                            <p class="page-subtitle">Performance summary and analytics</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="add-btn" style="background:#6c757d;" onclick="closeExamReport()"><i class="fas fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;">
+                        <div class="exam-stat-card">
+                            <div class="stat-number" id="reportTotalStudents">0</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                        <div class="exam-stat-card">
+                            <div class="stat-number" id="reportAvgScore">0%</div>
+                            <div class="stat-label">Average Score</div>
+                        </div>
+                        <div class="exam-stat-card">
+                            <div class="stat-number" id="reportHighestScore">0</div>
+                            <div class="stat-label">Highest Score</div>
+                        </div>
+                        <div class="exam-stat-card">
+                            <div class="stat-number" id="reportLowestScore">0</div>
+                            <div class="stat-label">Lowest Score</div>
+                        </div>
+                    </div>
+                    <div class="table-card">
+                        <div class="table-title">
+                            <span>Grade Distribution</span>
+                            <span class="badge">Performance</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="reportGradeTable">
+                                <thead><tr><th>Grade</th><th>Range</th><th>Students</th><th>Percentage</th></tr></thead>
+                                <tbody id="reportGradeTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabStudents" class="tab-content">
+                <div class="page-header">
+                    <div><h1><span id="studentsPageTitle">Manage Students</span></h1><p class="page-subtitle">Add, edit, and manage student records</p></div>
+                    <div class="page-actions">
+                        <button class="add-btn admin-only" id="addStudentBtn"><i class="fas fa-plus-circle"></i> Enroll Student</button>
+                        <button class="export-csv-btn" onclick="exportStudentsCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+                <div class="panel-metric-row">
+                    <div class="metric-card"><div class="metric-card-title">Total Students</div><div class="metric-card-value" id="studentMetricTotal">0</div></div>
+                    <div class="metric-card"><div class="metric-card-title">Active</div><div class="metric-card-value" id="studentMetricActive">0</div></div>
+                    <div class="metric-card"><div class="metric-card-title">Male</div><div class="metric-card-value" id="studentMetricMale">0</div></div>
+                    <div class="metric-card"><div class="metric-card-title">Female</div><div class="metric-card-value" id="studentMetricFemale">0</div></div>
+                </div>
+                <div class="panel-toolbar">
+                    <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="searchStudents" placeholder="Search by name, ID, or parent..."></div>
+                    <div class="toolbar-actions">
+                        <select id="studentClassFilter" class="select-filter"><option value="All">All Classes</option></select>
+                    </div>
+                </div>
+                <div class="table-card">
+                    <div class="table-title"><span>All Students</span><span id="studentCountBadge" class="badge">0</span></div>
+                    <div class="table-wrapper"><table id="studentsTable"><thead><tr><th>Student Info</th><th>Class</th><th>Age/Gender</th><th>Parent Info</th><th>Location</th><th>Admission Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="studentsTbody"></tbody></table></div>
+                </div>
+            </div>
+
+            <div id="tabAttendance" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-clipboard-check" style="color:#8e44ad;"></i> Attendance Tracking</h1>
+                        <p class="page-subtitle">Mark daily attendance for each class and view attendance summaries</p>
+                    </div>
+                </div>
+
+                <div class="sub-tabs">
+                    <button class="sub-tab active" data-attendsubtab="mark"><i class="fas fa-check-square"></i> Mark Attendance</button>
+                    <button class="sub-tab" data-attendsubtab="summary"><i class="fas fa-chart-bar"></i> Summary</button>
+                </div>
+
+                <div id="attendSubtabMark" class="subtab-content active-subtab">
+                    <div class="attend-controls">
+                        <div>
+                            <label>Date</label>
+                            <input type="date" id="attendanceDate" />
+                        </div>
+                        <div>
+                            <label>Class</label>
+                            <select id="attendanceClassSelect"><option value="">-- Select Class --</option></select>
+                        </div>
+                        <div style="display:flex;gap:8px;margin-left:auto;flex-direction:row;align-items:flex-end;">
+                            <button class="btn-save" id="markAllPresentBtn" style="background:#27ae60;padding:10px 16px;font-size:0.85rem;">
+                                <i class="fas fa-check-double"></i> Mark All Present
+                            </button>
+                            <button class="btn-save" id="clearAttendanceBtn" style="background:#e74c3c;padding:10px 16px;font-size:0.85rem;">
+                                <i class="fas fa-eraser"></i> Clear Day
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="attendanceGrid" style="margin-top:20px;">
+                        <div class="no-exam-data-msg">
+                            <i class="fas fa-clipboard-check"></i>
+                            <h4>Select a class and date</h4>
+                            <p>Choose a date and class above to start marking attendance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="attendSubtabSummary" class="subtab-content">
+                    <div class="attend-controls">
+                        <div>
+                            <label>Class</label>
+                            <select id="attendanceSummaryClass"><option value="All">All Classes</option></select>
+                        </div>
+                        <div>
+                            <label>From</label>
+                            <input type="date" id="attendanceFromDate" />
+                        </div>
+                        <div>
+                            <label>To</label>
+                            <input type="date" id="attendanceToDate" />
+                        </div>
+                        <div style="flex-direction:row;align-items:flex-end;">
+                            <button class="btn-save" id="applyAttendanceFilter" style="padding:10px 16px;font-size:0.85rem;background:#2980b9;">
+                                <i class="fas fa-filter"></i> Apply Filter
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-card" style="margin-top:20px;">
+                        <div class="table-title">
+                            <span>Attendance Summary</span>
+                            <span id="attendanceSummaryCount" class="badge">0</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="attendanceSummaryTable">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Class</th>
+                                        <th>Days Marked</th>
+                                        <th style="color:#27ae60;">Present</th>
+                                        <th style="color:#e74c3c;">Absent</th>
+                                        <th style="color:#f39c12;">Late</th>
+                                        <th>Attendance %</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendanceSummaryTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabStaffattendance" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-user-clock" style="color:#8e44ad;"></i> Teacher Attendance</h1>
+                        <p class="page-subtitle">Mark daily attendance for teaching staff and view summaries</p>
+                    </div>
+                </div>
+
+                <div class="sub-tabs">
+                    <button class="sub-tab active" data-staffsubtab="mark"><i class="fas fa-check-square"></i> Mark Attendance</button>
+                    <button class="sub-tab" data-staffsubtab="summary"><i class="fas fa-chart-bar"></i> Summary</button>
+                </div>
+
+                <div id="staffSubtabMark" class="subtab-content active-subtab">
+                    <div class="attend-controls">
+                        <div>
+                            <label>Date</label>
+                            <input type="date" id="staffAttendanceDate" />
+                        </div>
+                        <div style="display:flex;gap:8px;margin-left:auto;flex-direction:row;align-items:flex-end;">
+                            <button class="btn-save" id="staffMarkAllPresentBtn" style="background:#27ae60;padding:10px 16px;font-size:0.85rem;">
+                                <i class="fas fa-check-double"></i> Mark All Present
+                            </button>
+                            <button class="btn-save" id="staffClearBtn" style="background:#e74c3c;padding:10px 16px;font-size:0.85rem;">
+                                <i class="fas fa-eraser"></i> Clear Day
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="staffAttendanceGrid" style="margin-top:20px;">
+                        <div class="no-exam-data-msg">
+                            <i class="fas fa-user-clock"></i>
+                            <h4>Select a date</h4>
+                            <p>Pick a date above to start marking teacher attendance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="staffSubtabSummary" class="subtab-content">
+                    <div class="attend-controls">
+                        <div>
+                            <label>Teacher</label>
+                            <select id="staffSummaryTeacher"><option value="All">All Teachers</option></select>
+                        </div>
+                        <div>
+                            <label>From</label>
+                            <input type="date" id="staffSummaryFrom" />
+                        </div>
+                        <div>
+                            <label>To</label>
+                            <input type="date" id="staffSummaryTo" />
+                        </div>
+                        <div style="flex-direction:row;align-items:flex-end;">
+                            <button class="btn-save" id="staffApplyFilter" style="padding:10px 16px;font-size:0.85rem;background:#2980b9;">
+                                <i class="fas fa-filter"></i> Apply Filter
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-card" style="margin-top:20px;">
+                        <div class="table-title">
+                            <span>Teacher Attendance Summary</span>
+                            <span id="staffSummaryCount" class="badge">0</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="staffSummaryTable">
+                                <thead>
+                                    <tr>
+                                        <th>Teacher</th>
+                                        <th>Subjects</th>
+                                        <th>Days Marked</th>
+                                        <th style="color:#27ae60;">Present</th>
+                                        <th style="color:#e74c3c;">Absent</th>
+                                        <th style="color:#f39c12;">Late</th>
+                                        <th>Attendance %</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="staffSummaryTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabTeachers" class="tab-content">
+                <div class="page-header">
+                    <div><h1>Manage Teachers</h1><p class="page-subtitle">Add, edit, and manage teaching staff</p></div>
+                    <div class="page-actions">
+                        <button class="add-btn" id="addTeacherBtn"><i class="fas fa-plus-circle"></i> Add New Teacher</button>
+                        <button class="export-csv-btn" onclick="exportTeachersCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+                <div class="panel-toolbar">
+                    <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="searchTeachers" placeholder="Search by name, email, or subject..."></div>
+                </div>
+                <div class="table-card">
+                    <div class="table-title"><span>All Teachers</span><span id="teacherCountBadge" class="badge">0</span></div>
+                    <div class="table-wrapper"><table id="teachersTable"><thead><tr><th>Name</th><th>Contact</th><th>Subjects</th><th>Assigned Classes</th><th>Date Joined</th><th>Actions</th></tr></thead><tbody id="teachersTbody"></tbody></table></div>
+                </div>
+            </div>
+
+            <div id="tabPayments" class="tab-content">
+                <div class="page-header">
+                    <div><h1>Financial Management</h1><p class="page-subtitle">Track student payments, manage budgets, and record expenses</p></div>
+                    <div class="page-actions">
+                        <button class="add-btn" id="addPaymentBtn"><i class="fas fa-plus-circle"></i> Record Payment</button>
+                    </div>
+                </div>
+                <div class="sub-tabs">
+                    <button class="sub-tab active" data-subtab="payments"><i class="fas fa-money-bill-wave"></i> Student Payments</button>
+                    <button class="sub-tab" data-subtab="budget"><i class="fas fa-coins"></i> Budget Management</button>
+                    <button class="sub-tab" data-subtab="expenses"><i class="fas fa-receipt"></i> Expense Tracking</button>
+                    <button class="sub-tab" data-subtab="feesetup"><i class="fas fa-layer-group"></i> Fee Setup</button>
+                    <button class="sub-tab" data-subtab="arrears"><i class="fas fa-exclamation-triangle"></i> Arrears</button>
+                </div>
+
+                <div id="subtabPayments" class="subtab-content active-subtab">
+
+                    <div class="register-filter-bar">
+                        <div class="rf-group">
+                            <label>Academic Year</label>
+                            <select id="registerYearFilter"><option value="">All Years</option></select>
+                        </div>
+                        <div class="rf-group">
+                            <label>Term</label>
+                            <select id="registerTermFilter"><option value="">All Terms</option></select>
+                        </div>
+                        <div class="rf-group rf-actions">
+                            <button class="export-csv-btn" onclick="exportRegisterCSV()"><i class="fas fa-file-csv"></i> Export Register</button>
+                        </div>
+                    </div>
+
+                    <div id="registerGroupsView">
+
+                        <div class="register-summary-cards">
+                            <div class="rsc">
+                                <div class="val" id="regTotalStudents">0</div>
+                                <div class="lbl">Total Students</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="regTotalExpected">GH₵0.00</div>
+                                <div class="lbl">Total Expected</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="regTotalCollected" style="color:#27ae60;">GH₵0.00</div>
+                                <div class="lbl">Total Collected</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="regTotalOutstanding" style="color:#e74c3c;">GH₵0.00</div>
+                                <div class="lbl">Total Outstanding</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="regFullyPaid" style="color:#27ae60;">0</div>
+                                <div class="lbl">Fully Paid</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="regPartiallyPaid" style="color:#f39c12;">0</div>
+                                <div class="lbl">Partially Paid</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="regUnpaid" style="color:#e74c3c;">0</div>
+                                <div class="lbl">Unpaid</div>
+                            </div>
+                        </div>
+
+                        <div id="registerGroupsContainer"></div>
+                    </div>
+
+                    <div id="registerDetailView" style="display:none;">
+
+                        <div class="register-detail-header">
+                            <button class="register-back-btn" onclick="backToRegisterGroups()">
+                                <i class="fas fa-arrow-left"></i> All Classes
+                            </button>
+                            <div>
+                                <h2><i class="fas fa-book"></i> <span id="registerDetailClassName">—</span></h2>
+                                <p id="registerDetailSubtitle">Detailed student payment register for this class</p>
+                            </div>
+                        </div>
+
+                        <div class="register-summary-cards" id="registerDetailSummaryCards"></div>
+
+                        <div class="table-card" style="margin-bottom:24px;">
+                            <div class="table-title">
+                                <span>📖 Student Payment Register</span>
+                                <span id="registerCountBadge" class="badge">0</span>
+                            </div>
+                            <div class="table-wrapper">
+                                <table id="paymentRegisterTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:50px;">No.</th>
+                                            <th>Student Name</th>
+                                            <th>Student ID</th>
+                                            <th>Fee / Payment Details</th>
+                                            <th>Total Due</th>
+                                            <th>Total Paid</th>
+                                            <th>Balance</th>
+                                            <th>Status</th>
+                                            <th style="width:70px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="paymentRegisterTbody"></tbody>
+                                </table>
+                            </div>
+                            <div class="register-footer-summary" id="registerFooterSummary"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:32px;">
+                        <div class="page-header" style="margin-bottom:12px;">
+                            <div>
+                                <h3 style="font-size:1.1rem;color:#2c3e50;margin:0;"><i class="fas fa-list-ul" style="color:#8e44ad;"></i> Recorded Payments Log</h3>
+                                <p class="page-subtitle" style="font-size:0.85rem;margin-top:4px;">Every individual payment transaction is stored here — nothing is overwritten. This is the raw transaction log.</p>
+                            </div>
+                        </div>
+
+                        <div class="panel-toolbar">
+                            <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="searchPayments" placeholder="Search by student, method, or description..."></div>
+                            <div class="toolbar-actions">
+                                <select id="paymentStatusFilter">
+                                    <option value="All">All Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Overdue">Overdue</option>
+                                </select>
+                                <button class="export-csv-btn" onclick="exportPaymentsCSV()"><i class="fas fa-file-csv"></i> Export Log</button>
+                            </div>
+                        </div>
+
+                        <div class="table-card">
+                            <div class="table-title"><span>All Payments</span><span id="paymentCountBadge" class="badge">0</span></div>
+                            <div class="table-wrapper">
+                                <table id="paymentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Fee Type</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Method</th>
+                                            <th>Reference</th>
+                                            <th>Class</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="paymentsTbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="subtabBudget" class="subtab-content">
+                    <div class="panel-toolbar">
+                        <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="searchBudget" placeholder="Search budget categories..."></div>
+                        <div class="toolbar-actions">
+                            <button class="add-btn" id="addBudgetBtn" style="background:#8e44ad;"><i class="fas fa-plus-circle"></i> Add Budget</button>
+                            <button class="export-csv-btn" onclick="exportBudgetsCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        </div>
+                    </div>
+                    <div class="table-card">
+                        <div class="table-title"><span>Budget Categories</span><span id="budgetCountBadge" class="badge">0</span></div>
+                        <div class="table-wrapper"><table id="budgetTable"><thead><tr><th>Category</th><th>Allocated (GHS)</th><th>Spent (GHS)</th><th>Remaining (GHS)</th><th>Progress</th><th>Status</th><th>Actions</th></tr></thead><tbody id="budgetTbody"></tbody></table></div>
+                    </div>
+                </div>
+
+                <div id="subtabExpenses" class="subtab-content">
+                    <div class="panel-toolbar">
+                        <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="searchExpenses" placeholder="Search expenses by description or category..."></div>
+                        <div class="toolbar-actions">
+                            <button class="add-btn" id="addExpenseBtn" style="background:#8e44ad;"><i class="fas fa-plus-circle"></i> Add Expense</button>
+                            <button class="export-csv-btn" onclick="exportExpensesCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        </div>
+                    </div>
+                    <div class="table-card">
+                        <div class="table-title"><span>All Expenses</span><span id="expenseCountBadge" class="badge">0</span></div>
+                        <div class="table-wrapper">
+                            <table id="expensesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Class</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th>Amount (GHS)</th>
+                                        <th>Date</th>
+                                        <th>Method</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expensesTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="subtabFeesetup" class="subtab-content">
+                    <div class="panel-toolbar">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchFeeStructure" placeholder="Search by class, year, term, or category..." />
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="add-btn" id="addFeeStructureBtn" style="background:#8e44ad;">
+                                <i class="fas fa-plus-circle"></i> Add Fee Entry
+                            </button>
+                            <button class="export-csv-btn" onclick="exportFeeStructureCSV()">
+                                <i class="fas fa-file-csv"></i> Export CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="fee-stats-row">
+                        <div class="fee-stat-card">
+                            <div class="fee-stat-value" id="feeStatsClassCount">0</div>
+                            <div class="fee-stat-label">Classes with Fees</div>
+                        </div>
+                        <div class="fee-stat-card">
+                            <div class="fee-stat-value" id="feeStatsEntryCount">0</div>
+                            <div class="fee-stat-label">Total Fee Entries</div>
+                        </div>
+                        <div class="fee-stat-card">
+                            <div class="fee-stat-value" id="feeStatsTotalValue">GH₵0</div>
+                            <div class="fee-stat-label">Total Fee Value</div>
+                        </div>
+                    </div>
+
+                    <div id="feeSetupCardsContainer"></div>
+                </div>
+
+                <div id="subtabArrears" class="subtab-content">
+                    <div class="register-filter-bar">
+                        <div class="rf-group">
+                            <label>Academic Year</label>
+                            <select id="arrearsYearFilter"><option value="">All Years</option></select>
+                        </div>
+                        <div class="rf-group">
+                            <label>Term</label>
+                            <select id="arrearsTermFilter"><option value="">All Terms</option></select>
+                        </div>
+                        <div class="rf-group">
+                            <label>Class</label>
+                            <select id="arrearsClassFilter"><option value="">All Classes</option></select>
+                        </div>
+                        <div class="rf-group rf-actions">
+                            <button class="export-csv-btn" onclick="exportArrearsCSV()"><i class="fas fa-file-csv"></i> Export Arrears</button>
+                        </div>
+                    </div>
+
+                    <div class="register-summary-cards" style="grid-template-columns:repeat(3,1fr);">
+                        <div class="rsc">
+                            <div class="val" id="arrearsTotalOwed" style="color:#e74c3c;">GH₵0.00</div>
+                            <div class="lbl">Total Outstanding</div>
+                        </div>
+                        <div class="rsc">
+                            <div class="val" id="arrearsStudentCount" style="color:#f39c12;">0</div>
+                            <div class="lbl">Students Owing</div>
+                        </div>
+                        <div class="rsc">
+                            <div class="val" id="arrearsFullyCleared" style="color:#27ae60;">0</div>
+                            <div class="lbl">Fully Cleared</div>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="table-title">
+                            <span>⚠️ Students with Outstanding Balances</span>
+                            <span id="arrearsCountBadge" class="badge">0</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="arrearsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:50px;">No.</th>
+                                        <th>Student Name</th>
+                                        <th>Class</th>
+                                        <th>Total Due</th>
+                                        <th>Total Paid</th>
+                                        <th>Balance</th>
+                                        <th>Status</th>
+                                        <th style="width:70px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="arrearsTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabTimetable" class="tab-content">
+                <div class="page-header">
+                    <div><h1>Time Table Management</h1><p class="page-subtitle">Create and manage class schedules</p></div>
+                    <div class="page-actions"><button class="add-btn admin-only" id="addTimetableBtn"><i class="fas fa-plus-circle"></i> Add Schedule</button></div>
+                </div>
+                <div class="timetable-filter-bar">
+                    <div><label style="font-weight:600;margin-right:8px;">Filter by Class:</label><select id="timetableClassFilter"><option value="All">All Classes</option></select></div>
+                    <div><label style="font-weight:600;margin-right:8px;">Filter by Teacher:</label><select id="timetableTeacherFilter"><option value="All">All Teachers</option></select></div>
+                    <div class="day-selector">
+                        <button class="day-btn active" data-day="Monday">Mon</button>
+                        <button class="day-btn" data-day="Tuesday">Tue</button>
+                        <button class="day-btn" data-day="Wednesday">Wed</button>
+                        <button class="day-btn" data-day="Thursday">Thu</button>
+                        <button class="day-btn" data-day="Friday">Fri</button>
+                    </div>
+                </div>
+                <div class="table-card">
+                    <div class="table-title"><span>Class Schedule</span><span id="timetableCountBadge" class="badge">0</span></div>
+                    <div class="timetable-grid" id="timetableGrid"></div>
+                </div>
+            </div>
+
+            <div id="tabSettings" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-cog" style="color:#8e44ad;"></i> School Settings</h1>
+                        <p class="page-subtitle">Customize your school's branding, manage academic terms, and theme color</p>
+                    </div>
+                </div>
+
+                <div class="settings-card admin-only">
+                    <h2>Branding & Appearance</h2>
+                    <p class="subtitle">Update your school's identity across the entire portal.</p>
+
+                    <div class="settings-group">
+                        <label for="settingsSchoolName">School Name</label>
+                        <div class="help-text">This name appears in the sidebar, dashboard, and page titles.</div>
+                        <input type="text" id="settingsSchoolName" placeholder="Enter school name" />
+                    </div>
+
+                    <div class="settings-group">
+                        <label>School Logo</label>
+                        <div class="help-text">Upload a square image (PNG, JPG, or SVG). Recommended size: 120×120px.</div>
+                        <div class="logo-upload-area" id="logoUploadArea">
+                            <img class="logo-preview" id="logoPreview" src="" alt="Logo preview" style="display:none;" />
+                            <span class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></span>
+                            <div class="upload-text">Click or drag to upload a logo</div>
+                            <input type="file" id="logoUploadInput" accept="image/*" />
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <label for="settingsPrimaryColor">Primary Theme Color</label>
+                        <div class="help-text">This color is used for the sidebar gradient, accent borders, and buttons.</div>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="settingsPrimaryColor" value="#6c3a9d" />
+                            <span class="color-hex" id="colorHexDisplay">#6c3a9d</span>
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save"></i> Save Settings</button>
+                        <button class="btn-reset" id="resetSettingsBtn"><i class="fas fa-undo"></i> Reset to Defaults</button>
+                    </div>
+                </div>
+
+                <div class="settings-card admin-only" style="margin-top:24px;">
+                    <h2>📅 Academic Terms</h2>
+                    <p class="subtitle">Manage the terms for your academic year. Exams are linked to terms.</p>
+                    <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                        <input type="text" id="newTermName" placeholder="Enter term name (e.g. Term 1)" style="flex:1;min-width:200px;padding:10px;border-radius:8px;border:1px solid #dfe6e9;" />
+                        <button class="add-btn" id="addTermBtn" style="background:#27ae60;"><i class="fas fa-plus"></i> Add Term</button>
+                    </div>
+                    <div class="table-card" style="box-shadow:none;padding:0;border:1px solid #ecf0f1;">
+                        <table id="termsTable">
+                            <thead><tr><th>Term Name</th><th>Actions</th></tr></thead>
+                            <tbody id="termsTbody"></tbody>
+                        </table>
+                    </div>
+                    <div class="help-text" style="margin-top:12px;font-size:0.85rem;">
+                        💡 Assign terms to exams when creating or editing them. Terms help organize grading and reporting.
+                    </div>
+                </div>
+
+                <div class="settings-card admin-only" style="margin-top:24px;">
+                    <h2>📆 Academic Years</h2>
+                    <p class="subtitle">Manage the academic years used across the payment system.</p>
+                    <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                        <input type="text" id="newAcademicYearName" placeholder="e.g. 2026/2027" style="flex:1;min-width:200px;padding:10px;border-radius:8px;border:1px solid #dfe6e9;" />
+                        <button class="add-btn" id="addAcademicYearBtn" style="background:#27ae60;">
+                            <i class="fas fa-plus"></i> Add Year
+                        </button>
+                    </div>
+                    <div class="table-card" style="box-shadow:none;padding:0;border:1px solid #ecf0f1;">
+                        <table id="academicYearsTable">
+                            <thead><tr><th>Academic Year</th><th>Actions</th></tr></thead>
+                            <tbody id="academicYearsTbody"></tbody>
+                        </table>
+                    </div>
+                    <div class="help-text" style="margin-top:12px;font-size:0.85rem;">
+                        💡 Academic Years help keep payment records organized term-by-term.
+                    </div>
+                </div>
+
+                <div class="settings-card admin-only" style="margin-top:24px;">
+                    <h2>💰 Fee Categories</h2>
+                    <p class="subtitle">Customize the fee categories that appear in the payment system.</p>
+                    <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                        <input type="text" id="newFeeCategoryName" placeholder="e.g. Feeding" style="flex:1;min-width:200px;padding:10px;border-radius:8px;border:1px solid #dfe6e9;" />
+                        <button class="add-btn" id="addFeeCategoryBtn" style="background:#27ae60;">
+                            <i class="fas fa-plus"></i> Add Category
+                        </button>
+                    </div>
+                    <div class="table-card" style="box-shadow:none;padding:0;border:1px solid #ecf0f1;">
+                        <table id="feeCategoriesTable">
+                            <thead><tr><th>Category</th><th>Actions</th></tr></thead>
+                            <tbody id="feeCategoriesTbody"></tbody>
+                        </table>
+                    </div>
+                    <div class="help-text" style="margin-top:12px;font-size:0.85rem;">
+                        💡 Categories can be anything — School Fees, Feeding, Transport, etc.
+                    </div>
+                </div>
+
+                <div class="settings-card admin-only" style="margin-top:24px;" id="teacherAccountsCard">
+                    <h2>👥 Teacher Login Accounts</h2>
+                    <p class="subtitle">Manage teacher login credentials. Each teacher only sees their own classes and students.</p>
+
+                    <div class="table-card" style="box-shadow:none;padding:0;border:1px solid #ecf0f1;">
+                        <table id="teacherAccountsTable">
+                            <thead>
+                                <tr>
+                                    <th>Teacher</th>
+                                    <th>Username</th>
+                                    <th>Assigned Classes</th>
+                                    <th>Login Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacherAccountsTbody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="help-text" style="margin-top:12px;font-size:0.85rem;">
+                        💡 To create a login account, edit a teacher under <strong>Manage Teachers</strong> and fill in the Username + Password fields.
+                    </div>
+                </div>
+
+                <div class="settings-card admin-only" style="margin-top:24px;" id="accountantAccountsCard">
+                    <h2>💼 Accountant Login Accounts</h2>
+                    <p class="subtitle">Manage accountant login credentials. Accountants only see the finance sections (payments, budgets, expenses, reports).</p>
+
+                    <div style="margin-bottom:16px;">
+                        <button class="add-btn" id="addAccountantBtn" style="background:#2980b9;">
+                            <i class="fas fa-plus-circle"></i> Add Accountant
+                        </button>
+                    </div>
+
+                    <div class="table-card" style="box-shadow:none;padding:0;border:1px solid #ecf0f1;">
+                        <table id="accountantAccountsTable">
+                            <thead>
+                                <tr>
+                                    <th>Accountant</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Login Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accountantAccountsTbody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="help-text" style="margin-top:12px;font-size:0.85rem;">
+                        💡 Add accountants here. They log in at <strong>accountant.html</strong> with the credentials you set.
+                    </div>
+                </div>
+
+                <div class="settings-card" style="margin-top:24px;">
+                    <h2>🔒 Change Password</h2>
+                    <p class="subtitle">Change the password used to log in to the system. Keep it safe.</p>
+                    <div class="settings-actions">
+                        <button class="btn-save" id="changePasswordBtn" style="background:#8e44ad;">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                    </div>
+                    <div class="help-text" style="margin-top:12px;font-size:0.85rem;">
+                        💡 Your password is stored securely on this device. If you forget it, contact your system administrator.
+                    </div>
+                </div>
+
+                <div class="settings-card admin-only" style="margin-top:24px;">
+                    <h2>💾 Backup & Restore</h2>
+                    <p class="subtitle">Download a complete backup of all your data, or restore from a previous backup file.</p>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+                        <div style="padding:20px;border:2px solid #e0d6ed;border-radius:14px;background:#faf8ff;">
+                            <div style="font-size:2rem;color:#27ae60;margin-bottom:8px;"><i class="fas fa-download"></i></div>
+                            <h3 style="font-size:1rem;margin-bottom:6px;color:#2c3e50;">Download Backup</h3>
+                            <p style="font-size:0.85rem;color:#8c7da1;margin-bottom:14px;">
+                                Save a complete copy of all your data as a JSON file. Keep it safe — you can restore from it anytime.
+                            </p>
+                            <button class="btn-save" id="downloadBackupBtn" style="width:100%;background:#27ae60;">
+                                <i class="fas fa-file-download"></i> Download Backup File
+                            </button>
+                        </div>
+                        <div style="padding:20px;border:2px solid #e0d6ed;border-radius:14px;background:#faf8ff;">
+                            <div style="font-size:2rem;color:#2980b9;margin-bottom:8px;"><i class="fas fa-upload"></i></div>
+                            <h3 style="font-size:1rem;margin-bottom:6px;color:#2c3e50;">Restore from Backup</h3>
+                            <p style="font-size:0.85rem;color:#8c7da1;margin-bottom:14px;">
+                                Upload a previously saved backup file to restore your data.
+                                <strong style="color:#e74c3c;">⚠️ This will replace ALL current data.</strong>
+                            </p>
+                            <button class="btn-save" id="restoreBackupBtn" style="width:100%;background:#2980b9;">
+                                <i class="fas fa-file-upload"></i> Select Backup File
+                            </button>
+                            <input type="file" id="restoreFileInput" accept=".json,application/json" style="display:none;" />
+                        </div>
+                    </div>
+
+                    <div id="restorePreview" style="display:none;margin-top:16px;padding:16px;background:#f8f9ff;border-radius:12px;border:1px solid #dfe6e9;">
+                        <h4 style="font-size:0.95rem;margin-bottom:10px;color:#2c3e50;">📋 Backup File Contents</h4>
+                        <div id="restorePreviewContent" style="font-size:0.85rem;color:#636e72;line-height:1.6;"></div>
+                        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">
+                            <button class="btn-save" id="confirmRestoreBtn" style="background:#e74c3c;">
+                                <i class="fas fa-exclamation-triangle"></i> Yes, Restore Now
+                            </button>
+                            <button class="btn-reset" id="cancelRestoreBtn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:24px;background:#fff;border-radius:18px;padding:24px;border:1px solid #ecf0f1;">
+                    <h3 style="font-size:1rem;font-weight:600;color:#2c3e50;margin-bottom:12px;">👁️ Live Preview</h3>
+                    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #ecf0f1;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <img id="previewLogo" src="" alt="Logo" style="width:48px;height:48px;border-radius:50%;object-fit:cover;background:#f0edf5;display:none;" />
+                            <span id="previewSchoolName" style="font-weight:700;font-size:1.1rem;color:#2c3e50;">Dar Al-Wafaa</span>
+                        </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <span style="padding:6px 16px;border-radius:20px;font-size:0.8rem;font-weight:600;color:#fff;background:#6c3a9d;" id="previewBadge">Primary Color</span>
+                            <span style="padding:6px 16px;border-radius:20px;font-size:0.8rem;font-weight:600;color:#fff;background:linear-gradient(135deg,#6c3a9d,#8b5bb8);" id="previewGradient">Sidebar Gradient</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="studentModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Enroll Student</h2>
+            <input type="hidden" id="studentId">
+            <input type="text" id="studentName" placeholder="Full Name">
+            <input type="text" id="studentClass" placeholder="Class">
+            <div class="double-input">
+                <input type="number" id="studentAge" placeholder="Age">
+                <select id="studentGender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <input type="date" id="studentAdmissionDate">
+            <select id="studentStatus">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+            <input type="text" id="parentName" placeholder="Parent Name">
+            <input type="text" id="parentContact" placeholder="Parent Contact">
+            <input type="text" id="studentLocation" placeholder="Location (e.g. City, Region)">
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeStudentModal">Cancel</button>
+                <button class="save-btn" id="saveStudentBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="teacherModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Add Teacher</h2>
+            <input type="hidden" id="teacherId">
+            <input type="text" id="teacherName" placeholder="Teacher Name">
+            <input type="email" id="teacherEmail" placeholder="Email">
+            <input type="text" id="teacherClass" placeholder="Assigned Class(es) – comma-separated for multiple">
+            <input type="text" id="teacherSubject" placeholder="Subject(s)">
+            <input type="text" id="teacherPhone" placeholder="Phone">
+            <input type="date" id="teacherDateJoined">
+            <div style="background:#f8f3ff;border-radius:10px;padding:12px 14px;margin:8px 0 12px;border-left:4px solid #8e44ad;">
+                <div style="font-weight:600;font-size:0.85rem;color:#5c3c8e;margin-bottom:8px;">
+                    <i class="fas fa-key"></i> Login Account (Optional)
+                </div>
+                <div class="double-input">
+                    <input type="text" id="teacherUsername" placeholder="Username (for login)" autocomplete="off" />
+                    <input type="text" id="teacherPassword" placeholder="Password (min 4 chars)" autocomplete="off" />
+                </div>
+                <div class="modal-hint" style="margin-bottom:0;">
+                    💡 Give the teacher a username & password so they can log in with limited access.
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeTeacherModal">Cancel</button>
+                <button class="save-btn" id="saveTeacherBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Record Payment</h2>
+            <input type="hidden" id="paymentId">
+
+            <label style="font-weight:600;font-size:0.9rem;">Student *</label>
+            <select id="paymentStudentId"><option value="">-- Select Student --</option></select>
+
+            <div class="double-input">
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Academic Year</label>
+                    <select id="paymentYear"><option value="">-- Year --</option></select>
+                </div>
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Term</label>
+                    <select id="paymentTerm"><option value="">-- Term --</option></select>
+                </div>
+            </div>
+
+            <label style="font-weight:600;font-size:0.9rem;">Fee Type / Category</label>
+            <select id="paymentFeeType"><option value="">-- Select Fee Type --</option></select>
+
+            <div class="double-input">
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Amount (GHS) *</label>
+                    <input type="number" id="paymentAmount" step="0.01" placeholder="Amount">
+                </div>
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Date *</label>
+                    <input type="date" id="paymentDate">
+                </div>
+            </div>
+
+            <label style="font-weight:600;font-size:0.9rem;">Payment Method</label>
+            <select id="paymentMethod">
+                <option>Cash</option>
+                <option>MTN MoMo</option>
+                <option>Telecel Cash</option>
+                <option>AirtelTigo Money</option>
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+            </select>
+
+            <label style="font-weight:600;font-size:0.9rem;">Payment Reference <span style="font-weight:400;color:#8c7da1;">(optional)</span></label>
+            <input type="text" id="paymentReference" placeholder="e.g. MoMo Transaction ID, Cheque No., Receipt No." />
+
+            <label style="font-weight:600;font-size:0.9rem;">Class</label>
+            <select id="paymentClass">
+                <option value="">-- Select Class --</option>
+            </select>
+
+            <label style="font-weight:600;font-size:0.9rem;">Status</label>
+            <select id="paymentStatus">
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Overdue">Overdue</option>
+            </select>
+
+            <label style="font-weight:600;font-size:0.9rem;">Notes</label>
+            <textarea id="paymentDesc" placeholder="Additional notes about this payment (optional)"></textarea>
+
+            <div class="modal-hint">💡 Each payment is stored separately. Multiple installments are kept — never overwritten.</div>
+
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closePaymentModal">Cancel</button>
+                <button class="save-btn" id="savePaymentBtn">Save Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="classModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="classModalTitle">Add Class</h2>
+            <input type="hidden" id="classId" />
+            <input type="text" id="className" placeholder="Class Name (e.g. Primary 3A)" />
+            <select id="classLevel">
+                <option value="Nursery">Nursery</option>
+                <option value="Kindergarten">Kindergarten</option>
+                <option value="KG">KG</option>
+                <option value="Primary">Primary</option>
+                <option value="Junior High School">Junior High School</option>
+            </select>
+            <input type="number" id="classCapacity" placeholder="Capacity (max students)" min="1" />
+            <select id="classStatus">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+            <div class="modal-hint">💡 Classes are used to group students. Each student must be assigned to a class.</div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeClassModal">Cancel</button>
+                <button class="save-btn" id="saveClassBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="subjectModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="subjectModalTitle">Add Subject</h2>
+            <input type="hidden" id="subjectId" />
+            <input type="text" id="subjectName" placeholder="Subject Name (e.g. Mathematics)" />
+            <input type="text" id="subjectCode" placeholder="Subject Code (e.g. MATH101)" />
+            <select id="subjectLevel">
+                <option value="Nursery 1-2">Nursery 1-2</option>
+                <option value="KG 1-2">KG 1-2</option>
+                <option value="Basic 1–3">Basic 1–3</option>
+                <option value="Basic 4–6">Basic 4–6</option>
+                <option value="JHS 1–3">JHS 1–3</option>
+            </select>
+            <textarea id="subjectDescription" placeholder="Description (optional)"></textarea>
+            <div class="modal-hint">💡 Select the level for this subject. Subjects are grouped by level.</div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeSubjectModal">Cancel</button>
+                <button class="save-btn" id="saveSubjectBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="examModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="examModalTitle">Create Exam</h2>
+            <input type="hidden" id="examId" />
+            <input type="text" id="examName" placeholder="Exam Name (e.g. Mid-Term Test)" />
+            <input type="text" id="examSubject" placeholder="Type subject name (e.g. Mathematics)" list="subjectSuggestions" autocomplete="off" />
+            <datalist id="subjectSuggestions"></datalist>
+            <select id="examClass">
+                <option value="">-- Select Class --</option>
+            </select>
+            <select id="examTerm">
+                <option value="">-- Select Term --</option>
+            </select>
+            <input type="date" id="examDate" />
+            <input type="number" id="examMaxScore" placeholder="Maximum Score" min="1" step="1" />
+            <select id="examType">
+                <option value="Individual Test">Individual Test</option>
+                <option value="Group Work">Group Work</option>
+                <option value="Class Test">Class Test</option>
+                <option value="Project">Project</option>
+                <option value="End of Term Exam">End of Term Exam</option>
+                <option value="Other">Other</option>
+            </select>
+            <textarea id="examDescription" placeholder="Description (optional)"></textarea>
+            <div class="modal-hint">💡 Assign a Term to the exam so it can be filtered in the report card.</div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeExamModal">Cancel</button>
+                <button class="save-btn" id="saveExamBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="budgetModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="budgetModalTitle">Set Budget</h2>
+            <input type="hidden" id="budgetId">
+            <input type="text" id="budgetCategory" placeholder="Category (e.g. Tuition, Activities, Facilities)" />
+            <input type="number" id="budgetAmount" step="0.01" placeholder="Allocated Amount (GHS)" />
+            <div class="modal-hint">💡 Set a budget category to track spending against it. You can record expenses later.</div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeBudgetModal">Cancel</button>
+                <button class="save-btn" id="saveBudgetBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="expenseModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="expenseModalTitle">Record Expense</h2>
+            <input type="hidden" id="expenseId">
+            <div class="double-input">
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Student</label>
+                    <select id="expenseStudentId" style="width:100%;padding:10px 12px;margin:4px 0 12px;border:1px solid #bdc3c7;border-radius:6px;">
+                        <option value="">-- Select Student --</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Class</label>
+                    <input type="text" id="expenseClass" placeholder="Class" style="width:100%;padding:10px 12px;margin:4px 0 12px;border:1px solid #bdc3c7;border-radius:6px;" />
+                </div>
+            </div>
+            <label style="font-weight:600;font-size:0.9rem;">Category *</label>
+            <select id="expenseCategory">
+                <option value="">-- Select Category --</option>
+            </select>
+            <div id="expenseNoBudgetHint" class="modal-hint" style="display:none;">
+                ⚠️ No budget categories found. <a id="expenseGoToBudgetLink">Create a budget first</a> before recording expenses.
+            </div>
+            <input type="text" id="expenseDescription" placeholder="Description *" />
+            <input type="number" id="expenseAmount" step="0.01" placeholder="Amount (GHS) *" />
+            <input type="date" id="expenseDate" />
+            <select id="expenseMethod">
+                <option>Cash</option>
+                <option>Card</option>
+                <option>Bank Transfer</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeExpenseModal">Cancel</button>
+                <button class="save-btn" id="saveExpenseBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="timetableModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="timetableModalTitle">Add Schedule</h2>
+            <input type="hidden" id="timetableId">
+            <select id="timetableDay">
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+            </select>
+            <input type="time" id="timetableTime">
+            <select id="timetableClass">
+                <option value="">-- Select Class --</option>
+            </select>
+            <input type="text" id="timetableSubject" placeholder="Subject">
+            <select id="timetableTeacher">
+                <option value="">-- Select Teacher --</option>
+            </select>
+            <input type="text" id="timetableRoom" placeholder="Room">
+            <div class="modal-buttons">
+                <button class="delete-btn-modal" id="deleteTimetableBtn"><i class="fas fa-trash-alt"></i> Delete</button>
+                <button class="cancel-btn" id="closeTimetableModal">Cancel</button>
+                <button class="save-btn" id="saveTimetableBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         UPDATED PROMOTION MODAL — with student selection
+         ═══════════════════════════════════════════════════════ -->
+    <div id="promoteModal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 600px;">
+            <h2>Promote Students</h2>
+            <p style="margin-bottom:16px;color:#636e72;font-size:0.9rem;">
+                Select students to promote from <strong id="promoteCurrentClass">—</strong> to the target class.
+                Unchecked students will remain in their current class.
+            </p>
+
+            <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">Target Class</label>
+            <select id="promoteTargetClass" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid #dfe6e9;margin-bottom:16px;">
+                <option value="">-- Select Class --</option>
+            </select>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">Students to Promote</label>
+                <label style="font-size:0.82rem;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:600;color:#6c3a9d;">
+                    <input type="checkbox" id="promoteSelectAll" checked style="width:auto;margin:0;transform:scale(1.1);" />
+                    Select All
+                </label>
+            </div>
+
+            <div id="promoteStudentsList" style="max-height:320px;overflow-y:auto;border:1px solid #ecf0f1;border-radius:10px;padding:8px 12px;background:#fafcff;">
+                <!-- Student list will be populated by JS -->
+            </div>
+
+            <div class="modal-hint" style="margin-top:12px;">
+                💡 Unchecked students will remain in <strong id="promoteCurrentClassHint">the current class</strong>.
+            </div>
+
+            <div class="modal-buttons" style="margin-top:16px;">
+                <button class="cancel-btn" id="closePromoteModal">Cancel</button>
+                <button class="save-btn" id="savePromoteBtn">
+                    <i class="fas fa-arrow-right"></i> Promote Selected
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="changePasswordModal" class="modal-overlay">
+        <div class="modal-card" style="max-width:420px;">
+            <div style="text-align:center;margin-bottom:20px;">
+                <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#6c3a9d,#8b5bb8);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.8rem;color:#fff;">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h2 style="margin-bottom:6px;">Change Password</h2>
+                <p style="color:#8c7da1;font-size:0.9rem;">Update your login password.</p>
+            </div>
+            <input type="password" id="currentPassword" placeholder="Current password" style="width:100%;padding:12px 14px;border:2px solid #e0d6ed;border-radius:12px;font-size:0.95rem;margin-bottom:10px;" />
+            <input type="password" id="newPasswordLocal" placeholder="New password (min 6 characters)" style="width:100%;padding:12px 14px;border:2px solid #e0d6ed;border-radius:12px;font-size:0.95rem;margin-bottom:10px;" />
+            <input type="password" id="confirmPasswordLocal" placeholder="Confirm new password" style="width:100%;padding:12px 14px;border:2px solid #e0d6ed;border-radius:12px;font-size:0.95rem;margin-bottom:12px;" />
+            <div id="changePassError" style="color:#e74c3c;font-size:0.85rem;min-height:20px;margin-bottom:8px;"></div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeChangePassModal" style="flex:1;">Cancel</button>
+                <button class="save-btn" id="saveNewPasswordBtn" style="flex:1;background:#27ae60;">
+                    <i class="fas fa-check"></i> Save Password
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="teacherAccountModal" class="modal-overlay">
+        <div class="modal-card" style="max-width:480px;">
+            <div style="text-align:center;margin-bottom:16px;">
+                <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#6c3a9d,#8b5bb8);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:1.6rem;color:#fff;">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h2 style="margin-bottom:4px;">Teacher Login Account</h2>
+                <p style="color:#8c7da1;font-size:0.9rem;">Manage login credentials for <strong id="taTeacherName">—</strong></p>
+            </div>
+
+            <input type="hidden" id="taTeacherId" />
+
+            <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">Username</label>
+            <input type="text" id="taUsername" placeholder="e.g. sarah.ahmed" autocomplete="off" />
+
+            <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">New Password <span style="font-weight:400;color:#8c7da1;">(leave blank to keep current)</span></label>
+            <input type="text" id="taPassword" placeholder="Enter new password" autocomplete="off" />
+
+            <div style="display:flex;align-items:center;gap:10px;margin:12px 0;padding:10px 14px;background:#f8f3ff;border-radius:8px;">
+                <input type="checkbox" id="taCanLogin" style="width:auto;margin:0;transform:scale(1.2);" />
+                <label for="taCanLogin" style="margin:0;font-weight:600;font-size:0.9rem;cursor:pointer;">Allow this teacher to log in</label>
+            </div>
+
+            <div id="taError" style="color:#e74c3c;font-size:0.85rem;min-height:20px;margin-bottom:8px;"></div>
+
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeTeacherAccountModal" style="flex:1;">Cancel</button>
+                <button class="save-btn" id="saveTeacherAccountBtn" style="flex:1;background:#27ae60;">
+                    <i class="fas fa-check"></i> Save Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="accountantModal" class="modal-overlay">
+        <div class="modal-card" style="max-width:520px;">
+            <div style="text-align:center;margin-bottom:16px;">
+                <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#1e5a99,#2980b9);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:1.6rem;color:#fff;">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h2 style="margin-bottom:4px;" id="accountantModalTitle">Add Accountant</h2>
+                <p style="color:#8c7da1;font-size:0.9rem;">Manage accountant login details</p>
+            </div>
+
+            <input type="hidden" id="accId" />
+
+            <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">Full Name *</label>
+            <input type="text" id="accName" placeholder="e.g. John Mensah" autocomplete="off" />
+
+            <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">Username *</label>
+            <input type="text" id="accUsername" placeholder="e.g. john.mensah" autocomplete="off" />
+
+            <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">Password * <span style="font-weight:400;color:#8c7da1;">(min 4 chars)</span></label>
+            <input type="text" id="accPassword" placeholder="Enter password" autocomplete="off" />
+
+            <div class="double-input">
+                <div>
+                    <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">Email</label>
+                    <input type="email" id="accEmail" placeholder="Optional" autocomplete="off" />
+                </div>
+                <div>
+                    <label style="font-weight:600;font-size:0.85rem;color:#2c3e50;">Phone</label>
+                    <input type="text" id="accPhone" placeholder="Optional" autocomplete="off" />
+                </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;margin:12px 0;padding:10px 14px;background:#f5faff;border-radius:8px;">
+                <input type="checkbox" id="accCanLogin" style="width:auto;margin:0;transform:scale(1.2);" checked />
+                <label for="accCanLogin" style="margin:0;font-weight:600;font-size:0.9rem;cursor:pointer;">Allow this accountant to log in</label>
+            </div>
+
+            <div id="accModalError" style="color:#e74c3c;font-size:0.85rem;min-height:20px;margin-bottom:8px;"></div>
+
+            <div class="modal-buttons">
+                <button class="delete-btn-modal" id="deleteAccountantBtn" style="display:none;"><i class="fas fa-trash-alt"></i> Delete</button>
+                <button class="cancel-btn" id="closeAccountantModal">Cancel</button>
+                <button class="save-btn" id="saveAccountantBtn" style="background:#2980b9;">
+                    <i class="fas fa-check"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="performanceModal" class="modal-overlay performance-modal">
+        <div class="modal-card" id="performanceModalCard">
+            <div class="school-branding">
+                <img id="perfSchoolLogo" src="" alt="School Logo" style="display:none;" />
+                <span id="perfSchoolName">Dar Al-Wafaa</span>
+            </div>
+
+            <div class="perf-header">
+                <div class="perf-header-left">
+                    <div class="perf-avatar-lg" id="perfAvatar">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%238E44AD'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='white' font-family='Arial, Helvetica, sans-serif' font-weight='700'%3EK%3C/text%3E%3C/svg%3E" alt="Profile" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+                    </div>
+                    <div>
+                        <div class="perf-name-title" id="perfName">Student Name</div>
+                        <div class="perf-name-sub" id="perfSub">Class: <span id="perfClass">—</span> &nbsp;|&nbsp; ID: <span id="perfId">—</span> &nbsp;|&nbsp; Age: <span id="perfAge">—</span> &nbsp;|&nbsp; Gender: <span id="perfGender">—</span> &nbsp;|&nbsp; Admission: <span id="perfAdmission">—</span></div>
+                    </div>
+                </div>
+                <div class="perf-actions">
+                    <select id="perfTermFilter" style="padding:8px 14px;border-radius:8px;border:1px solid #dfe6e9;background:#fff;font-weight:600;">
+                        <option value="all">All Terms</option>
+                    </select>
+                    <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+                    <button class="btn-pdf" onclick="downloadPerformancePDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                    <button class="btn-close-perf" onclick="closePerformanceModal()"><i class="fas fa-times"></i> Close</button>
+                </div>
+            </div>
+
+            <div class="perf-stats" id="perfStats">
+                <div class="perf-stat-item">
+                    <div class="value" id="perfAttendanceValue" style="color:#5c3c8e;">—</div>
+                    <div class="label">Attendance Rate</div>
+                    <span class="sub" id="perfAttendanceSub">No records</span>
+                </div>
+                <div class="perf-stat-item"><div class="value" id="perfPosition">—</div><div class="label">Class Position</div><span class="sub" id="perfPositionSub">of <span id="perfClassSize">0</span> students</span></div>
+                <div class="perf-stat-item"><div class="value" id="perfClassSizeDisplay">—</div><div class="label">Class Size</div><span class="sub" id="perfClassSizeSub">students</span></div>
+                <div class="perf-stat-item"><div class="value" id="perfAvgScore">—</div><div class="label">Average Score</div><span class="sub" id="perfAvgSub">overall</span></div>
+                <div class="perf-stat-item"><div class="value" id="perfGrade">—</div><div class="label">Overall Grade</div><span class="sub" id="perfGradeSub">performance</span></div>
+            </div>
+
+            <div id="scoringBreakdown" style="margin-bottom:24px;"></div>
+
+            <div class="perf-section-title"><i class="fas fa-table" style="color:#8e44ad;"></i> Subject-wise Results</div>
+            <div style="overflow-x:auto;">
+                <table class="perf-subject-table" id="perfSubjectTable">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Individual Test</th>
+                            <th>Group Work</th>
+                            <th>Class Test</th>
+                            <th>Project</th>
+                            <th>Total</th>
+                            <th>End of Term Exam</th>
+                            <th>Overall Total</th>
+                            <th>Position</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="perfSubjectTbody"></tbody>
+                </table>
+            </div>
+
+            <div class="perf-comments-grid">
+                <div class="perf-comment-box">
+                    <h5><i class="fas fa-chalkboard-teacher"></i> Class Teacher's Comment</h5>
+                    <p id="perfTeacherComment" class="placeholder">No comment yet.</p>
+                </div>
+                <div class="perf-comment-box">
+                    <h5><i class="fas fa-user-tie"></i> Headteacher's Comment</h5>
+                    <p id="perfHeadComment" class="placeholder">No comment yet.</p>
+                </div>
+            </div>
+
+            <div class="perf-strengths-grid">
+                <div class="perf-strength-box">
+                    <h5><i class="fas fa-star" style="color:#f39c12;"></i> Strengths</h5>
+                    <ul id="perfStrengths">
+                        <li class="placeholder">No strengths recorded yet.</li>
+                    </ul>
+                </div>
+                <div class="perf-strength-box">
+                    <h5><i class="fas fa-arrow-up" style="color:#e74c3c;"></i> Areas for Improvement</h5>
+                    <ul id="perfImprovements">
+                        <li class="placeholder">No areas for improvement recorded yet.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="perf-chart-container">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
+                    <span style="font-weight:600;font-size:0.95rem;color:#2c3e50;"><i class="fas fa-chart-bar" style="color:#8e44ad;"></i> Performance Chart</span>
+                    <span style="font-size:0.75rem;color:#8c7da1;">Subject-wise scores (%)</span>
+                </div>
+                <div class="chart-container"><canvas id="perfChartCanvas"></canvas></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="studentDetailsModal" class="modal-overlay student-details-modal">
+        <div class="modal-card" style="max-width:1200px;width:95%;">
+            <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #f0e6ff;">
+                <h2 style="font-size:1.6rem;font-weight:700;color:#2c3e50;margin:0;">
+                    <i class="fas fa-user-graduate" style="color:#8e44ad;"></i> Student Details
+                </h2>
+                <button class="btn-close-perf" onclick="closeStudentDetails()" style="background:transparent;border:none;font-size:1.6rem;cursor:pointer;color:#95a5a6;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="studentDetailsContent"></div>
+        </div>
+    </div>
+
+    <div id="feeStructureModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="feeStructureModalTitle">Add Fee Entry</h2>
+            <input type="hidden" id="feeStructureId" />
+            <label style="font-weight:600;font-size:0.9rem;">Class *</label>
+            <select id="feeStructureClass"><option value="">-- Select Class --</option></select>
+            <label style="font-weight:600;font-size:0.9rem;">Academic Year *</label>
+            <select id="feeStructureYear"><option value="">-- Select Year --</option></select>
+            <label style="font-weight:600;font-size:0.9rem;">Term *</label>
+            <select id="feeStructureTerm"><option value="">-- Select Term --</option></select>
+            <label style="font-weight:600;font-size:0.9rem;">Fee Category *</label>
+            <select id="feeStructureCategory"><option value="">-- Select Category --</option></select>
+            <label style="font-weight:600;font-size:0.9rem;">Amount (GHS) *</label>
+            <input type="number" id="feeStructureAmount" step="0.01" placeholder="e.g. 1500" />
+            <div class="modal-hint">💡 This defines how much a class pays for a specific fee category in a given year and term.</div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeFeeStructureModal">Cancel</button>
+                <button class="save-btn" id="saveFeeStructureBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/script.js"></script>
+    <script src="js/supabase-bridge.js"></script>
+
+</body>
+</html>

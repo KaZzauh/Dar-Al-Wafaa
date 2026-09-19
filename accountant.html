@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Accountant Portal | Dar Al-Wafaa</title>
+
+    <link rel="icon" id="dynamicFavicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231e5a99'/%3E%3Ctext x='32' y='42' font-size='36' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'%3EA%3C/text%3E%3C/svg%3E" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/accountant.css">
+</head>
+<body>
+
+    <!-- ===== ACCOUNTANT LOGIN OVERLAY ===== -->
+    <div id="accountantLoginOverlay">
+        <div class="login-card accountant-login-card">
+            <div class="login-logo accountant-logo">
+                <i class="fas fa-calculator"></i>
+            </div>
+            <h1 id="loginSchoolName">Dar Al-Wafaa</h1>
+            <p class="login-sub">Accountant Portal</p>
+            <form id="accountantLoginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="accUsernameLogin"><i class="fas fa-user" style="margin-right:6px;color:#2980b9;"></i> Username</label>
+                    <input type="text" id="accUsernameLogin" placeholder="Enter your username" required autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label for="accPasswordLogin"><i class="fas fa-lock" style="margin-right:6px;color:#2980b9;"></i> Password</label>
+                    <input type="password" id="accPasswordLogin" placeholder="Enter your password" required autocomplete="off" />
+                </div>
+                <button type="submit" class="login-btn accountant-login-btn" id="accLoginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In as Accountant
+                </button>
+                <div class="login-error" id="accLoginError"></div>
+                <div class="login-footer">
+                    <a href="index.html" class="admin-link"><i class="fas fa-user-shield"></i> Admin Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar accountant-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img class="logo-img" id="sidebarLogo" src="" alt="School Logo" style="display:none;" />
+            <div class="logo-text" id="sidebarSchoolName">🎓 Dar Al-Wafaa</div>
+            <div class="logo-sub">Accountant Portal</div>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-item active" data-tab="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</div>
+            <div class="nav-item" data-tab="payments"><i class="fas fa-money-bill-wave"></i> Payments</div>
+            <div class="nav-item" data-tab="students"><i class="fas fa-users"></i> Students</div>
+            <div class="nav-item" data-tab="budgets"><i class="fas fa-coins"></i> Budgets</div>
+            <div class="nav-item" data-tab="expenses"><i class="fas fa-receipt"></i> Expenses</div>
+            <div class="nav-item" data-tab="reports"><i class="fas fa-chart-line"></i> Reports</div>
+            <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i> My Account</div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content" id="mainContent">
+        <div class="dashboard-container">
+
+            <!-- TOP HEADER -->
+            <div class="top-header">
+                <div class="top-header-left">
+                    <button class="hamburger-toggle" id="hamburgerToggle" aria-label="Toggle navigation menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title">💼 <span id="pageTitleSpan">Accountant Portal</span></div>
+                </div>
+                <div class="top-header-right">
+                    <div class="user-badge accountant-badge">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userDisplayName">Accountant</span>
+                        <span class="role-badge accountant">ACCOUNTANT</span>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- ─── DASHBOARD TAB ─── -->
+            <div id="tabDashboard" class="tab-content active">
+                <div class="header">
+                    <h1 id="dashboardGreeting">Welcome back!</h1>
+                    <p>Here's your financial overview for the school.</p>
+                </div>
+
+                <div class="accountant-welcome-banner">
+                    <div class="awb-avatar" id="awbAvatar">A</div>
+                    <div style="flex:1;">
+                        <h2 id="awbName">Accountant</h2>
+                        <p>Manage payments, budgets, and expenses</p>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card accountant-stat">
+                        <div class="stat-card-title">Total Collected</div>
+                        <div class="stat-card-value" id="accTotalCollected">GH₵0.00</div>
+                        <div class="stat-card-change" style="color:#27ae60;">All time</div>
+                        <div class="stat-card-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    </div>
+                    <div class="stat-card accountant-stat">
+                        <div class="stat-card-title">Pending</div>
+                        <div class="stat-card-value" id="accTotalPending">GH₵0.00</div>
+                        <div class="stat-card-change" style="color:#f39c12;">Awaiting payment</div>
+                        <div class="stat-card-icon"><i class="fas fa-clock"></i></div>
+                    </div>
+                    <div class="stat-card accountant-stat">
+                        <div class="stat-card-title">Overdue</div>
+                        <div class="stat-card-value" id="accTotalOverdue" style="color:#e74c3c;">GH₵0.00</div>
+                        <div class="stat-card-change" style="color:#e74c3c;">Past due date</div>
+                        <div class="stat-card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    </div>
+                    <div class="stat-card accountant-stat">
+                        <div class="stat-card-title">Total Expenses</div>
+                        <div class="stat-card-value" id="accTotalExpenses" style="color:#2980b9;">GH₵0.00</div>
+                        <div class="stat-card-change" style="color:#2980b9;">All categories</div>
+                        <div class="stat-card-icon"><i class="fas fa-receipt"></i></div>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-bar"></i> Revenue vs Expenses (Last 12 Months)</h3>
+                        <div class="chart-container"><canvas id="accRevExpChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-pie"></i> Payment Methods</h3>
+                        <div class="chart-container"><canvas id="accPaymentMethodChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="content-sections">
+                    <div class="section">
+                        <h2>💰 Recent Payments</h2>
+                        <div id="accRecentPayments"></div>
+                    </div>
+                    <div class="section">
+                        <h2>🧾 Recent Expenses</h2>
+                        <div id="accRecentExpenses"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── PAYMENTS TAB (UPGRADED with subtabs) ─── -->
+            <div id="tabPayments" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-money-bill-wave" style="color:#2980b9;"></i> Financial Management</h1>
+                        <p class="page-subtitle">Track student payments, view fee setup, and manage arrears</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="add-btn accountant-add-btn" id="accAddPaymentBtn"><i class="fas fa-plus-circle"></i> Record Payment</button>
+                    </div>
+                </div>
+
+                <div class="sub-tabs">
+                    <button class="sub-tab active" data-accsubtab="payments"><i class="fas fa-money-bill-wave"></i> Student Payments</button>
+                    <button class="sub-tab" data-accsubtab="feesetup"><i class="fas fa-layer-group"></i> Fee Setup</button>
+                    <button class="sub-tab" data-accsubtab="arrears"><i class="fas fa-exclamation-triangle"></i> Arrears</button>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+                     STUDENT PAYMENTS SUBTAB — GROUPED REGISTER VIEW
+                     ═══════════════════════════════════════════════════════ -->
+                <div id="accSubtabPayments" class="subtab-content active-subtab">
+
+                    <div class="register-filter-bar">
+                        <div class="rf-group">
+                            <label>Academic Year</label>
+                            <select id="accRegisterYearFilter"><option value="">All Years</option></select>
+                        </div>
+                        <div class="rf-group">
+                            <label>Term</label>
+                            <select id="accRegisterTermFilter"><option value="">All Terms</option></select>
+                        </div>
+                        <div class="rf-group rf-actions">
+                            <button class="export-csv-btn" onclick="exportAccRegisterCSV()">
+                                <i class="fas fa-file-csv"></i> Export Register
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ═══ GROUPED VIEW ═══ -->
+                    <div id="accRegisterGroupsView">
+
+                        <div class="register-summary-cards">
+                            <div class="rsc">
+                                <div class="val" id="accRegTotalStudents">0</div>
+                                <div class="lbl">Total Students</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="accRegTotalExpected">GH₵0.00</div>
+                                <div class="lbl">Total Expected</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="accRegTotalCollected" style="color:#27ae60;">GH₵0.00</div>
+                                <div class="lbl">Total Collected</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="accRegTotalOutstanding" style="color:#e74c3c;">GH₵0.00</div>
+                                <div class="lbl">Total Outstanding</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="accRegFullyPaid" style="color:#27ae60;">0</div>
+                                <div class="lbl">Fully Paid</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="accRegPartiallyPaid" style="color:#f39c12;">0</div>
+                                <div class="lbl">Partially Paid</div>
+                            </div>
+                            <div class="rsc">
+                                <div class="val" id="accRegUnpaid" style="color:#e74c3c;">0</div>
+                                <div class="lbl">Unpaid</div>
+                            </div>
+                        </div>
+
+                        <div id="accRegisterGroupsContainer"></div>
+                    </div>
+
+                    <!-- ═══ DETAIL VIEW (single class) ═══ -->
+                    <div id="accRegisterDetailView" style="display:none;">
+
+                        <div class="register-detail-header">
+                            <button class="register-back-btn" onclick="backToAccRegisterGroups()">
+                                <i class="fas fa-arrow-left"></i> All Classes
+                            </button>
+                            <div>
+                                <h2><i class="fas fa-book"></i> <span id="accRegisterDetailClassName">—</span></h2>
+                                <p id="accRegisterDetailSubtitle">Detailed student payment register for this class</p>
+                            </div>
+                        </div>
+
+                        <div class="register-summary-cards" id="accRegisterDetailSummaryCards"></div>
+
+                        <div class="table-card" style="margin-bottom:24px;">
+                            <div class="table-title">
+                                <span>📖 Student Payment Register</span>
+                                <span id="accRegisterCountBadge" class="badge">0</span>
+                            </div>
+                            <div class="table-wrapper">
+                                <table id="accPaymentRegisterTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:50px;">No.</th>
+                                            <th>Student Name</th>
+                                            <th>Student ID</th>
+                                            <th>Fee / Payment Details</th>
+                                            <th>Total Due</th>
+                                            <th>Total Paid</th>
+                                            <th>Balance</th>
+                                            <th>Status</th>
+                                            <th style="width:70px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="accPaymentRegisterTbody"></tbody>
+                                </table>
+                            </div>
+
+                            <div class="register-footer-summary" id="accRegisterFooterSummary"></div>
+                        </div>
+                    </div>
+
+                    <!-- ═══ RECORDED PAYMENTS LOG (unchanged) ═══ -->
+                    <div style="margin-top:32px;">
+                        <div class="page-header" style="margin-bottom:12px;">
+                            <div>
+                                <h3 style="font-size:1.1rem;color:#2c3e50;margin:0;"><i class="fas fa-list-ul" style="color:#2980b9;"></i> Recorded Payments Log</h3>
+                                <p class="page-subtitle" style="font-size:0.85rem;margin-top:4px;">Every individual payment transaction is stored here — nothing is overwritten. This is the raw transaction log.</p>
+                            </div>
+                        </div>
+
+                        <div class="panel-toolbar">
+                            <div class="search-bar accountant-search-bar">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="accSearchPayments" placeholder="Search by student, method, or description..." />
+                            </div>
+                            <div class="toolbar-actions">
+                                <select id="accPaymentStatusFilter" class="select-filter">
+                                    <option value="All">All Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Overdue">Overdue</option>
+                                </select>
+                                <button class="export-csv-btn" onclick="exportAccPaymentsCSV()"><i class="fas fa-file-csv"></i> Export Log</button>
+                            </div>
+                        </div>
+
+                        <div class="table-card">
+                            <div class="table-title">
+                                <span>All Payments</span>
+                                <span id="accPaymentCountBadge" class="badge accountant-badge-color">0</span>
+                            </div>
+                            <div class="table-wrapper">
+                                <table id="accPaymentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Student</th>
+                                            <th>Fee Type</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Method</th>
+                                            <th>Reference</th>
+                                            <th>Class</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="accPaymentsTbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+                     FEE SETUP SUBTAB — Grouped by Level → Class → Year/Term
+                     ═══════════════════════════════════════════════════════ -->
+                <div id="accSubtabFeesetup" class="subtab-content">
+                    <div class="panel-toolbar">
+                        <div class="search-bar accountant-search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="accSearchFeeStructure" placeholder="Search by class, year, term, or category..." />
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="export-csv-btn" onclick="exportAccFeeStructureCSV()">
+                                <i class="fas fa-file-csv"></i> Export CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="modal-hint" style="margin-bottom:16px;">
+                        💡 This is a read-only view of the fee structure set up by the Administrator. Contact admin to make changes.
+                    </div>
+
+                    <div class="fee-stats-row">
+                        <div class="fee-stat-card">
+                            <div class="fee-stat-value" id="accFeeStatsClassCount">0</div>
+                            <div class="fee-stat-label">Classes with Fees</div>
+                        </div>
+                        <div class="fee-stat-card">
+                            <div class="fee-stat-value" id="accFeeStatsEntryCount">0</div>
+                            <div class="fee-stat-label">Total Fee Entries</div>
+                        </div>
+                        <div class="fee-stat-card">
+                            <div class="fee-stat-value" id="accFeeStatsTotalValue">GH₵0</div>
+                            <div class="fee-stat-label">Total Fee Value</div>
+                        </div>
+                    </div>
+
+                    <div id="feeSetupCardsContainer"></div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════
+                     ARREARS SUBTAB
+                     ═══════════════════════════════════════════════════════ -->
+                <div id="accSubtabArrears" class="subtab-content">
+                    <div class="register-filter-bar">
+                        <div class="rf-group">
+                            <label>Academic Year</label>
+                            <select id="accArrearsYearFilter"><option value="">All Years</option></select>
+                        </div>
+                        <div class="rf-group">
+                            <label>Term</label>
+                            <select id="accArrearsTermFilter"><option value="">All Terms</option></select>
+                        </div>
+                        <div class="rf-group">
+                            <label>Class</label>
+                            <select id="accArrearsClassFilter"><option value="">All Classes</option></select>
+                        </div>
+                        <div class="rf-group rf-actions">
+                            <button class="export-csv-btn" onclick="exportAccArrearsCSV()"><i class="fas fa-file-csv"></i> Export Arrears</button>
+                        </div>
+                    </div>
+
+                    <div class="register-summary-cards" style="grid-template-columns:repeat(3,1fr);">
+                        <div class="rsc">
+                            <div class="val" id="accArrearsTotalOwed" style="color:#e74c3c;">GH₵0.00</div>
+                            <div class="lbl">Total Outstanding</div>
+                        </div>
+                        <div class="rsc">
+                            <div class="val" id="accArrearsStudentCount" style="color:#f39c12;">0</div>
+                            <div class="lbl">Students Owing</div>
+                        </div>
+                        <div class="rsc">
+                            <div class="val" id="accArrearsFullyCleared" style="color:#27ae60;">0</div>
+                            <div class="lbl">Fully Cleared</div>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="table-title">
+                            <span>⚠️ Students with Outstanding Balances</span>
+                            <span id="accArrearsCountBadge" class="badge accountant-badge-color">0</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="accArrearsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:50px;">No.</th>
+                                        <th>Student Name</th>
+                                        <th>Class</th>
+                                        <th>Total Due</th>
+                                        <th>Total Paid</th>
+                                        <th>Balance</th>
+                                        <th>Status</th>
+                                        <th style="width:70px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="accArrearsTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── STUDENTS TAB ─── -->
+            <div id="tabStudents" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-users" style="color:#2980b9;"></i> Students</h1>
+                        <p class="page-subtitle">Student payment reference (read-only)</p>
+                    </div>
+                </div>
+
+                <div class="panel-toolbar">
+                    <div class="search-bar accountant-search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="accSearchStudents" placeholder="Search by name or parent..." />
+                    </div>
+                    <div class="toolbar-actions">
+                        <select id="accStudentClassFilter" class="select-filter">
+                            <option value="All">All Classes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-title">
+                        <span>All Students</span>
+                        <span id="accStudentCountBadge" class="badge accountant-badge-color">0</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="accStudentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Class</th>
+                                    <th>Parent</th>
+                                    <th>Total Paid</th>
+                                    <th>Pending</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accStudentsTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── BUDGETS TAB ─── -->
+            <div id="tabBudgets" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-coins" style="color:#2980b9;"></i> Budgets</h1>
+                        <p class="page-subtitle">Manage budget categories and track utilization</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="add-btn accountant-add-btn" id="accAddBudgetBtn"><i class="fas fa-plus-circle"></i> Add Budget</button>
+                        <button class="export-csv-btn" onclick="exportAccBudgetsCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-title">
+                        <span>All Budget Categories</span>
+                        <span id="accBudgetCountBadge" class="badge accountant-badge-color">0</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="accBudgetTable">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Allocated</th>
+                                    <th>Spent</th>
+                                    <th>Remaining</th>
+                                    <th>Progress</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accBudgetTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── EXPENSES TAB ─── -->
+            <div id="tabExpenses" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-receipt" style="color:#2980b9;"></i> Expenses</h1>
+                        <p class="page-subtitle">Record and manage all school expenses</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="add-btn accountant-add-btn" id="accAddExpenseBtn"><i class="fas fa-plus-circle"></i> Add Expense</button>
+                        <button class="export-csv-btn" onclick="exportAccExpensesCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="panel-toolbar">
+                    <div class="search-bar accountant-search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="accSearchExpenses" placeholder="Search by description, category, or student..." />
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-title">
+                        <span>All Expenses</span>
+                        <span id="accExpenseCountBadge" class="badge accountant-badge-color">0</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="accExpensesTable">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Class</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accExpensesTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── REPORTS TAB ─── -->
+            <div id="tabReports" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-chart-line" style="color:#2980b9;"></i> Financial Reports</h1>
+                        <p class="page-subtitle">Revenue, expenses, and net income analysis</p>
+                    </div>
+                </div>
+
+                <div class="accountant-insight-grid">
+                    <div class="accountant-insight-card">
+                        <div class="insight-value" id="reportTotalRev">GH₵0</div>
+                        <div class="insight-label">Total Revenue</div>
+                    </div>
+                    <div class="accountant-insight-card">
+                        <div class="insight-value" id="reportTotalExp">GH₵0</div>
+                        <div class="insight-label">Total Expenses</div>
+                    </div>
+                    <div class="accountant-insight-card">
+                        <div class="insight-value" id="reportNetIncome">GH₵0</div>
+                        <div class="insight-label">Net Income</div>
+                    </div>
+                    <div class="accountant-insight-card">
+                        <div class="insight-value" id="reportAvgPayment">GH₵0</div>
+                        <div class="insight-label">Avg Payment</div>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-line"></i> Revenue Trend (Last 12 Months)</h3>
+                        <div class="chart-container"><canvas id="accRevenueTrendChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-bar"></i> Expenses by Category</h3>
+                        <div class="chart-container"><canvas id="accExpenseCategoryChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-area"></i> Net Income (Revenue - Expenses)</h3>
+                        <div class="chart-container"><canvas id="accNetIncomeChart"></canvas></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-pie"></i> Budget Utilization</h3>
+                        <div class="chart-container"><canvas id="accBudgetChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── SETTINGS TAB ─── -->
+            <div id="tabSettings" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-cog" style="color:#2980b9;"></i> My Account</h1>
+                        <p class="page-subtitle">Manage your profile and login credentials</p>
+                    </div>
+                </div>
+
+                <div class="settings-card accountant-settings-card">
+                    <h2>👤 My Profile</h2>
+                    <p class="subtitle">Your account information (read-only)</p>
+
+                    <div class="accountant-profile-grid">
+                        <div class="accountant-profile-item">
+                            <span class="api-label">Name</span>
+                            <span class="api-value" id="accProfileName">—</span>
+                        </div>
+                        <div class="accountant-profile-item">
+                            <span class="api-label">Username</span>
+                            <span class="api-value" id="accProfileUsername">—</span>
+                        </div>
+                        <div class="accountant-profile-item">
+                            <span class="api-label">Email</span>
+                            <span class="api-value" id="accProfileEmail">—</span>
+                        </div>
+                        <div class="accountant-profile-item">
+                            <span class="api-label">Phone</span>
+                            <span class="api-value" id="accProfilePhone">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card accountant-settings-card" style="margin-top:24px;">
+                    <h2>🔒 Change Password</h2>
+                    <p class="subtitle">Update your login password. Keep it safe.</p>
+
+                    <div class="settings-group">
+                        <label>Current Password</label>
+                        <input type="password" id="accCurrentPass" placeholder="Enter current password" />
+                    </div>
+                    <div class="settings-group">
+                        <label>New Password</label>
+                        <input type="password" id="accNewPass" placeholder="At least 4 characters" />
+                    </div>
+                    <div class="settings-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="accConfirmPass" placeholder="Re-enter new password" />
+                    </div>
+                    <div id="accPassError" style="color:#e74c3c;font-size:0.85rem;min-height:20px;margin-bottom:12px;"></div>
+                    <div class="settings-actions">
+                        <button class="btn-save accountant-btn-save" id="accSavePasswordBtn">
+                            <i class="fas fa-check"></i> Update Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== PAYMENT MODAL ===== -->
+    <div id="accPaymentModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="accPaymentModalTitle">Record Payment</h2>
+            <input type="hidden" id="accPaymentId" />
+
+            <label style="font-weight:600;font-size:0.9rem;">Student *</label>
+            <select id="accPaymentStudent"><option value="">-- Select Student --</option></select>
+
+            <div class="double-input">
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Academic Year</label>
+                    <select id="accPaymentYear"><option value="">-- Year --</option></select>
+                </div>
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Term</label>
+                    <select id="accPaymentTerm"><option value="">-- Term --</option></select>
+                </div>
+            </div>
+
+            <label style="font-weight:600;font-size:0.9rem;">Fee Type / Category</label>
+            <select id="accPaymentFeeType"><option value="">-- Select Fee Type --</option></select>
+
+            <div class="double-input">
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Amount (GHS) *</label>
+                    <input type="number" id="accPaymentAmount" step="0.01" placeholder="Amount" />
+                </div>
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Date *</label>
+                    <input type="date" id="accPaymentDate" />
+                </div>
+            </div>
+
+            <label style="font-weight:600;font-size:0.9rem;">Payment Method</label>
+            <select id="accPaymentMethod">
+                <option>Cash</option>
+                <option>MTN MoMo</option>
+                <option>Telecel Cash</option>
+                <option>AirtelTigo Money</option>
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+            </select>
+
+            <label style="font-weight:600;font-size:0.9rem;">Payment Reference <span style="font-weight:400;color:#8c7da1;">(optional)</span></label>
+            <input type="text" id="accPaymentReference" placeholder="e.g. MoMo Transaction ID, Cheque No." />
+
+            <label style="font-weight:600;font-size:0.9rem;">Class</label>
+            <select id="accPaymentClass">
+                <option value="">-- Select Class --</option>
+            </select>
+
+            <label style="font-weight:600;font-size:0.9rem;">Status</label>
+            <select id="accPaymentStatus">
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Overdue">Overdue</option>
+            </select>
+
+            <label style="font-weight:600;font-size:0.9rem;">Notes</label>
+            <textarea id="accPaymentDesc" placeholder="Additional notes about this payment (optional)"></textarea>
+
+            <div class="modal-hint">💡 Each payment is stored separately. Multiple installments are kept — never overwritten.</div>
+
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="accClosePaymentModal">Cancel</button>
+                <button class="save-btn accountant-save-btn" id="accSavePaymentBtn">Save Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BUDGET MODAL ===== -->
+    <div id="accBudgetModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="accBudgetModalTitle">Add Budget</h2>
+            <input type="hidden" id="accBudgetId" />
+            <input type="text" id="accBudgetCategory" placeholder="Category (e.g. Tuition, Activities, Facilities)" />
+            <input type="number" id="accBudgetAmount" step="0.01" placeholder="Allocated Amount (GHS)" />
+            <div class="modal-hint">💡 Set a budget category to track spending against it.</div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="accCloseBudgetModal">Cancel</button>
+                <button class="save-btn accountant-save-btn" id="accSaveBudgetBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== EXPENSE MODAL ===== -->
+    <div id="accExpenseModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="accExpenseModalTitle">Add Expense</h2>
+            <input type="hidden" id="accExpenseId" />
+            <div class="double-input">
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Student</label>
+                    <select id="accExpenseStudent" style="width:100%;padding:10px 12px;margin:4px 0 12px;border:1px solid #bdc3c7;border-radius:6px;">
+                        <option value="">-- Select Student --</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight:600;font-size:0.9rem;">Class</label>
+                    <input type="text" id="accExpenseClass" placeholder="Class" style="width:100%;padding:10px 12px;margin:4px 0 12px;border:1px solid #bdc3c7;border-radius:6px;" />
+                </div>
+            </div>
+            <label style="font-weight:600;font-size:0.9rem;">Category *</label>
+            <select id="accExpenseCategory"><option value="">-- Select Category --</option></select>
+            <input type="text" id="accExpenseDescription" placeholder="Description *" />
+            <input type="number" id="accExpenseAmount" step="0.01" placeholder="Amount (GHS) *" />
+            <input type="date" id="accExpenseDate" />
+            <select id="accExpenseMethod">
+                <option>Cash</option>
+                <option>Card</option>
+                <option>Bank Transfer</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="accCloseExpenseModal">Cancel</button>
+                <button class="save-btn accountant-save-btn" id="accSaveExpenseBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STUDENT STATEMENT MODAL ===== -->
+    <div id="accStudentDetailsModal" class="modal-overlay student-details-modal">
+        <div class="modal-card" style="max-width:1200px;width:95%;">
+            <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #f0e6ff;">
+                <h2 style="font-size:1.6rem;font-weight:700;color:#2c3e50;margin:0;">
+                    <i class="fas fa-user-graduate" style="color:#2980b9;"></i> Student Statement
+                </h2>
+                <button class="btn-close-perf" onclick="closeAccStudentStatement()" style="background:transparent;border:none;font-size:1.6rem;cursor:pointer;color:#95a5a6;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="accStudentDetailsContent"></div>
+        </div>
+    </div>
+
+    <div id="accountantToast" class="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/accountant.js"></script>
+    <script src="js/supabase-bridge.js"></script>
+
+</body>
+</html>

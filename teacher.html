@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Teacher Portal | Dar Al-Wafaa</title>
+
+    <link rel="icon" id="dynamicFavicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2327ae60'/%3E%3Ctext x='32' y='42' font-size='36' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-weight='bold'%3ET%3C/text%3E%3C/svg%3E" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/teacher.css">
+</head>
+<body>
+
+    <!-- ===== TEACHER LOGIN OVERLAY ===== -->
+    <div id="teacherLoginOverlay">
+        <div class="login-card teacher-login-card">
+            <div class="login-logo teacher-logo">
+                <i class="fas fa-chalkboard-user"></i>
+            </div>
+            <h1 id="loginSchoolName">Dar Al-Wafaa</h1>
+            <p class="login-sub">Teacher Portal</p>
+            <form id="teacherLoginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="teacherUsernameLogin"><i class="fas fa-user" style="margin-right:6px;color:#27ae60;"></i> Username</label>
+                    <input type="text" id="teacherUsernameLogin" placeholder="Enter your username" required autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label for="teacherPasswordLogin"><i class="fas fa-lock" style="margin-right:6px;color:#27ae60;"></i> Password</label>
+                    <input type="password" id="teacherPasswordLogin" placeholder="Enter your password" required autocomplete="off" />
+                </div>
+                <button type="submit" class="login-btn teacher-login-btn" id="teacherLoginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In as Teacher
+                </button>
+                <div class="login-error" id="teacherLoginError"></div>
+                <div class="login-footer">
+                    <a href="index.html" class="admin-link"><i class="fas fa-user-shield"></i> Admin Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar teacher-sidebar" id="sidebar">
+        <div class="sidebar-header" id="sidebarHeader">
+            <img class="logo-img" id="sidebarLogo" src="" alt="School Logo" style="display:none;" />
+            <div class="logo-text" id="sidebarSchoolName">🎓 Dar Al-Wafaa</div>
+            <div class="logo-sub">Teacher Portal</div>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-item active" data-tab="dashboard"><i class="fas fa-home"></i> Dashboard</div>
+            <div class="nav-item" data-tab="classes"><i class="fas fa-book-open"></i> My Classes</div>
+            <div class="nav-item" data-tab="students"><i class="fas fa-users"></i> My Students</div>
+            <div class="nav-item" data-tab="exams"><i class="fas fa-file-alt"></i> Exams & Grades</div>
+            <div class="nav-item" data-tab="attendance"><i class="fas fa-clipboard-check"></i> Attendance</div>
+            <div class="nav-item" data-tab="timetable"><i class="fas fa-clock"></i> My Schedule</div>
+            <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i> My Account</div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content" id="mainContent">
+        <div class="dashboard-container">
+
+            <!-- TOP HEADER -->
+            <div class="top-header">
+                <div class="top-header-left">
+                    <button class="hamburger-toggle" id="hamburgerToggle" aria-label="Toggle navigation menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title">👨‍🏫 <span id="pageTitleSpan">Teacher Portal</span></div>
+                </div>
+                <div class="top-header-right">
+                    <div class="user-badge teacher-badge">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userDisplayName">Teacher</span>
+                        <span class="role-badge teacher">TEACHER</span>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- ─── DASHBOARD TAB ─── -->
+            <div id="tabDashboard" class="tab-content active">
+                <div class="header">
+                    <h1 id="dashboardGreeting">Welcome back!</h1>
+                    <p>Here's an overview of your classes and students.</p>
+                </div>
+
+                <div class="teacher-welcome-banner" id="teacherWelcomeBanner">
+                    <div class="twb-avatar" id="twbAvatar">T</div>
+                    <div style="flex:1;">
+                        <h2 id="twbName">Teacher Name</h2>
+                        <p id="twbSubjects">Subjects</p>
+                        <div class="twb-classes" id="twbClasses"></div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card teacher-stat">
+                        <div class="stat-card-title">My Students</div>
+                        <div class="stat-card-value" id="teacherTotalStudents">0</div>
+                        <div class="stat-card-change">Active students</div>
+                        <div class="stat-card-icon"><i class="fas fa-user-graduate"></i></div>
+                    </div>
+                    <div class="stat-card teacher-stat">
+                        <div class="stat-card-title">My Classes</div>
+                        <div class="stat-card-value" id="teacherTotalClasses">0</div>
+                        <div class="stat-card-change">Assigned to you</div>
+                        <div class="stat-card-icon"><i class="fas fa-book-open"></i></div>
+                    </div>
+                    <div class="stat-card teacher-stat">
+                        <div class="stat-card-title">My Exams</div>
+                        <div class="stat-card-value" id="teacherTotalExams">0</div>
+                        <div class="stat-card-change">Created by you</div>
+                        <div class="stat-card-icon"><i class="fas fa-file-alt"></i></div>
+                    </div>
+                    <div class="stat-card teacher-stat">
+                        <div class="stat-card-title">Attendance Today</div>
+                        <div class="stat-card-value" id="teacherAttendanceToday">—</div>
+                        <div class="stat-card-change" id="teacherAttendanceTodaySub">No records</div>
+                        <div class="stat-card-icon"><i class="fas fa-clipboard-check"></i></div>
+                    </div>
+                </div>
+
+                <div class="content-sections">
+                    <div class="section">
+                        <h2>📚 My Classes</h2>
+                        <div id="teacherClassesList"></div>
+                    </div>
+                    <div class="section">
+                        <h2>🕐 Today's Schedule</h2>
+                        <div id="teacherScheduleList"></div>
+                    </div>
+                </div>
+
+                <div class="section" style="margin-top:24px;">
+                    <h2>📊 Class Performance Overview</h2>
+                    <div class="analytics-card" style="border:none;box-shadow:none;padding:0;">
+                        <div class="chart-container"><canvas id="teacherPerfChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── MY CLASSES TAB ─── -->
+            <div id="tabClasses" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-book-open" style="color:#27ae60;"></i> My Classes</h1>
+                        <p class="page-subtitle">Classes you are assigned to teach</p>
+                    </div>
+                </div>
+
+                <div class="class-metric-row">
+                    <div class="class-metric-card">
+                        <div class="metric-number" id="myClassTotalCount">0</div>
+                        <div class="metric-label">Total Classes</div>
+                    </div>
+                    <div class="class-metric-card">
+                        <div class="metric-number" id="myClassTotalStudents">0</div>
+                        <div class="metric-label">Students Enrolled</div>
+                    </div>
+                    <div class="class-metric-card">
+                        <div class="metric-number" id="myClassAvgSize">0</div>
+                        <div class="metric-label">Avg Class Size</div>
+                    </div>
+                    <div class="class-metric-card">
+                        <div class="metric-number" id="myClassExamsCount">0</div>
+                        <div class="metric-label">Total Exams</div>
+                    </div>
+                </div>
+
+                <div id="myClassGroupsContainer"></div>
+            </div>
+
+            <!-- ─── MY STUDENTS TAB ─── -->
+            <div id="tabStudents" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-users" style="color:#27ae60;"></i> My Students</h1>
+                        <p class="page-subtitle">Students across all your classes</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="add-btn teacher-add-btn" onclick="exportMyStudentsCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="panel-metric-row">
+                    <div class="metric-card teacher-metric-card"><div class="metric-card-title">Total Students</div><div class="metric-card-value" id="myStudentMetricTotal">0</div></div>
+                    <div class="metric-card teacher-metric-card"><div class="metric-card-title">Active</div><div class="metric-card-value" id="myStudentMetricActive">0</div></div>
+                    <div class="metric-card teacher-metric-card"><div class="metric-card-title">Male</div><div class="metric-card-value" id="myStudentMetricMale">0</div></div>
+                    <div class="metric-card teacher-metric-card"><div class="metric-card-title">Female</div><div class="metric-card-value" id="myStudentMetricFemale">0</div></div>
+                </div>
+
+                <div class="panel-toolbar">
+                    <div class="search-bar teacher-search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchMyStudents" placeholder="Search by name or parent..." />
+                    </div>
+                    <div class="toolbar-actions">
+                        <select id="myStudentClassFilter" class="select-filter"><option value="All">All My Classes</option></select>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-title">
+                        <span>Student List</span>
+                        <span id="myStudentCountBadge" class="badge teacher-badge-color">0</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="myStudentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Student Info</th>
+                                    <th>Class</th>
+                                    <th>Age / Gender</th>
+                                    <th>Parent</th>
+                                    <th>Attendance</th>
+                                    <th>Avg Score</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myStudentsTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── EXAMS & GRADES TAB ─── -->
+            <div id="tabExams" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-file-alt" style="color:#27ae60;"></i> My Exams</h1>
+                        <p class="page-subtitle">Create exams, enter grades, and view reports for your classes</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="add-btn teacher-add-btn" id="createTeacherExamBtn"><i class="fas fa-plus-circle"></i> Create Exam</button>
+                        <button class="export-csv-btn" onclick="exportMyExamsCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="exam-stat-grid">
+                    <div class="exam-stat-card">
+                        <div class="stat-number" id="myExamTotalCount">0</div>
+                        <div class="stat-label">Total Exams</div>
+                        <span class="stat-sub">Created by me</span>
+                    </div>
+                    <div class="exam-stat-card">
+                        <div class="stat-number" id="myExamCompletedCount">0</div>
+                        <div class="stat-label">Completed</div>
+                        <span class="stat-sub">With grades</span>
+                    </div>
+                    <div class="exam-stat-card">
+                        <div class="stat-number" id="myExamUpcomingCount">0</div>
+                        <div class="stat-label">Upcoming</div>
+                        <span class="stat-sub">Scheduled</span>
+                    </div>
+                    <div class="exam-stat-card">
+                        <div class="stat-number" id="myExamAvgScore">0%</div>
+                        <div class="stat-label">Avg Score</div>
+                        <span class="stat-sub">My exams</span>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-title">
+                        <span>All My Exams</span>
+                        <span id="myExamCountBadge" class="badge teacher-badge-color">0</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="myExamsTable">
+                            <thead>
+                                <tr>
+                                    <th>Exam Name</th>
+                                    <th>Subject</th>
+                                    <th>Class</th>
+                                    <th>Term</th>
+                                    <th>Date</th>
+                                    <th>Max Score</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myExamsTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Grade Entry Section -->
+                <div id="teacherGradeEntry" style="margin-top:24px;display:none;">
+                    <div class="page-header" style="margin-bottom:16px;">
+                        <div>
+                            <h2 style="font-size:1.3rem;color:#2c3e50;">
+                                <i class="fas fa-pencil-alt" style="color:#27ae60;"></i> Enter Grades: <span id="teacherGradeExamName">—</span>
+                            </h2>
+                            <p class="page-subtitle">Scores auto-save on change.</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="add-btn" style="background:#6c757d;" onclick="closeTeacherGradeEntry()"><i class="fas fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                    <div class="panel-toolbar">
+                        <div class="search-bar teacher-search-bar" style="max-width:300px;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="teacherGradeSearch" placeholder="Search student..." />
+                        </div>
+                        <span id="teacherGradeCount" class="badge teacher-badge-color">0 students</span>
+                    </div>
+                    <div class="table-card">
+                        <div class="table-wrapper">
+                            <table id="teacherGradeTable">
+                                <thead><tr><th>#</th><th>Student Name</th><th>Score</th><th>Grade</th></tr></thead>
+                                <tbody id="teacherGradeTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── ATTENDANCE TAB ─── -->
+            <div id="tabAttendance" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-clipboard-check" style="color:#27ae60;"></i> Attendance</h1>
+                        <p class="page-subtitle">Mark daily attendance for your classes</p>
+                    </div>
+                </div>
+
+                <div class="sub-tabs">
+                    <button class="sub-tab teacher-sub-tab active" data-teachertab="mark"><i class="fas fa-check-square"></i> Mark Attendance</button>
+                    <button class="sub-tab teacher-sub-tab" data-teachertab="summary"><i class="fas fa-chart-bar"></i> Summary</button>
+                </div>
+
+                <div id="teacherAttendMark" class="subtab-content active-subtab">
+                    <div class="attend-controls">
+                        <div>
+                            <label>Date</label>
+                            <input type="date" id="teacherAttendanceDate" />
+                        </div>
+                        <div>
+                            <label>Class</label>
+                            <select id="teacherAttendanceClass"><option value="">-- Select Class --</option></select>
+                        </div>
+                        <div style="display:flex;gap:8px;margin-left:auto;flex-direction:row;align-items:flex-end;">
+                            <button class="btn-save" id="teacherMarkAllPresentBtn" style="background:#27ae60;padding:10px 16px;font-size:0.85rem;">
+                                <i class="fas fa-check-double"></i> Mark All Present
+                            </button>
+                            <button class="btn-save" id="teacherClearBtn" style="background:#e74c3c;padding:10px 16px;font-size:0.85rem;">
+                                <i class="fas fa-eraser"></i> Clear Day
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="teacherAttendanceGrid" style="margin-top:20px;">
+                        <div class="no-exam-data-msg">
+                            <i class="fas fa-clipboard-check"></i>
+                            <h4>Select a class and date</h4>
+                            <p>Choose a class and date above to start marking attendance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="teacherAttendSummary" class="subtab-content">
+                    <div class="attend-controls">
+                        <div>
+                            <label>Class</label>
+                            <select id="teacherSummaryClass"><option value="All">All My Classes</option></select>
+                        </div>
+                        <div>
+                            <label>From</label>
+                            <input type="date" id="teacherSummaryFrom" />
+                        </div>
+                        <div>
+                            <label>To</label>
+                            <input type="date" id="teacherSummaryTo" />
+                        </div>
+                        <div style="flex-direction:row;align-items:flex-end;">
+                            <button class="btn-save" id="teacherApplyFilter" style="padding:10px 16px;font-size:0.85rem;background:#2980b9;">
+                                <i class="fas fa-filter"></i> Apply Filter
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-card" style="margin-top:20px;">
+                        <div class="table-title">
+                            <span>Attendance Summary</span>
+                            <span id="teacherSummaryCount" class="badge teacher-badge-color">0</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table id="teacherSummaryTable">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Class</th>
+                                        <th>Days Marked</th>
+                                        <th style="color:#27ae60;">Present</th>
+                                        <th style="color:#e74c3c;">Absent</th>
+                                        <th style="color:#f39c12;">Late</th>
+                                        <th>Attendance %</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="teacherSummaryTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── SCHEDULE TAB ─── -->
+            <div id="tabTimetable" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-clock" style="color:#27ae60;"></i> My Schedule</h1>
+                        <p class="page-subtitle">Your weekly teaching timetable</p>
+                    </div>
+                </div>
+
+                <div class="timetable-filter-bar">
+                    <div>
+                        <label style="font-weight:600;margin-right:8px;">Filter by Class:</label>
+                        <select id="teacherTimetableClassFilter"><option value="All">All My Classes</option></select>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-title">
+                        <span>Weekly Schedule</span>
+                        <span id="teacherTimetableCountBadge" class="badge teacher-badge-color">0</span>
+                    </div>
+                    <div class="timetable-grid" id="teacherTimetableGrid"></div>
+                </div>
+            </div>
+
+            <!-- ─── SETTINGS / MY ACCOUNT TAB ─── -->
+            <div id="tabSettings" class="tab-content">
+                <div class="page-header">
+                    <div>
+                        <h1><i class="fas fa-cog" style="color:#27ae60;"></i> My Account</h1>
+                        <p class="page-subtitle">Manage your profile and login credentials</p>
+                    </div>
+                </div>
+
+                <div class="settings-card teacher-settings-card">
+                    <h2>👤 My Profile</h2>
+                    <p class="subtitle">Your account information (read-only)</p>
+
+                    <div class="teacher-profile-grid">
+                        <div class="teacher-profile-item">
+                            <span class="tpi-label">Full Name</span>
+                            <span class="tpi-value" id="profileName">—</span>
+                        </div>
+                        <div class="teacher-profile-item">
+                            <span class="tpi-label">Email</span>
+                            <span class="tpi-value" id="profileEmail">—</span>
+                        </div>
+                        <div class="teacher-profile-item">
+                            <span class="tpi-label">Phone</span>
+                            <span class="tpi-value" id="profilePhone">—</span>
+                        </div>
+                        <div class="teacher-profile-item">
+                            <span class="tpi-label">Username</span>
+                            <span class="tpi-value" id="profileUsername">—</span>
+                        </div>
+                        <div class="teacher-profile-item">
+                            <span class="tpi-label">Subjects</span>
+                            <span class="tpi-value" id="profileSubjects">—</span>
+                        </div>
+                        <div class="teacher-profile-item">
+                            <span class="tpi-label">Assigned Classes</span>
+                            <span class="tpi-value" id="profileClasses">—</span>
+                        </div>
+                        <div class="teacher-profile-item">
+                            <span class="tpi-label">Date Joined</span>
+                            <span class="tpi-value" id="profileDateJoined">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card teacher-settings-card" style="margin-top:24px;">
+                    <h2>🔒 Change Password</h2>
+                    <p class="subtitle">Update your login password. Keep it safe.</p>
+
+                    <div class="settings-group">
+                        <label>Current Password</label>
+                        <input type="password" id="teacherCurrentPass" placeholder="Enter current password" />
+                    </div>
+                    <div class="settings-group">
+                        <label>New Password</label>
+                        <input type="password" id="teacherNewPass" placeholder="At least 4 characters" />
+                    </div>
+                    <div class="settings-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="teacherConfirmPass" placeholder="Re-enter new password" />
+                    </div>
+                    <div id="teacherPassError" style="color:#e74c3c;font-size:0.85rem;min-height:20px;margin-bottom:12px;"></div>
+                    <div class="settings-actions">
+                        <button class="btn-save teacher-btn-save" id="teacherSavePasswordBtn">
+                            <i class="fas fa-check"></i> Update Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== TEACHER EXAM MODAL ===== -->
+    <div id="teacherExamModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="teacherExamModalTitle">Create Exam</h2>
+            <input type="hidden" id="teacherExamId" />
+            <input type="text" id="teacherExamName" placeholder="Exam Name (e.g. Mid-Term Test)" />
+            <input type="text" id="teacherExamSubject" placeholder="Subject (e.g. Mathematics)" />
+            <select id="teacherExamClass">
+                <option value="">-- Select Class --</option>
+            </select>
+            <select id="teacherExamTerm">
+                <option value="">-- Select Term --</option>
+            </select>
+            <input type="date" id="teacherExamDate" />
+            <input type="number" id="teacherExamMaxScore" placeholder="Maximum Score" min="1" step="1" />
+            <select id="teacherExamType">
+                <option value="Individual Test">Individual Test</option>
+                <option value="Group Work">Group Work</option>
+                <option value="Class Test">Class Test</option>
+                <option value="Project">Project</option>
+                <option value="End of Term Exam">End of Term Exam</option>
+                <option value="Other">Other</option>
+            </select>
+            <textarea id="teacherExamDescription" placeholder="Description (optional)"></textarea>
+            <div class="modal-hint">💡 You can only create exams for your assigned classes.</div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeTeacherExamModal">Cancel</button>
+                <button class="save-btn teacher-save-btn" id="saveTeacherExamBtn">Save Exam</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STUDENT PERFORMANCE MODAL ===== -->
+    <div id="teacherPerfModal" class="modal-overlay performance-modal">
+        <div class="modal-card" style="max-width:1000px;width:95%;">
+            <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #d4edda;">
+                <h2 style="font-size:1.4rem;font-weight:700;color:#2c3e50;margin:0;">
+                    <i class="fas fa-chart-line" style="color:#27ae60;"></i> Student Performance
+                </h2>
+                <button onclick="closeTeacherPerfModal()" style="background:transparent;border:none;font-size:1.5rem;cursor:pointer;color:#95a5a6;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="teacherPerfContent"></div>
+        </div>
+    </div>
+
+    <div id="teacherToast" class="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/teacher.js"></script>
+    <script src="js/supabase-bridge.js"></script>
+
+</body>
+</html>
