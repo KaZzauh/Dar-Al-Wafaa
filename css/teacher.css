@@ -1,0 +1,494 @@
+/* ═══════════════════════════════════════════════════════════════
+   TEACHER PORTAL – Green theme
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── TEACHER LOGIN ─── */
+.teacher-login-card .teacher-logo {
+    background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+}
+.teacher-login-btn {
+    background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+}
+.teacher-login-btn:hover {
+    box-shadow: 0 12px 30px rgba(39, 174, 96, 0.35) !important;
+}
+.login-footer .admin-link {
+    color: #8c7da1;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.login-footer .admin-link:hover {
+    color: #6c3a9d;
+}
+
+/* ─── SIDEBAR (green gradient) ─── */
+.teacher-sidebar {
+    background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%) !important;
+}
+.teacher-sidebar .nav-item.active {
+    border-left-color: #ffcb05;
+}
+
+/* ─── HEADER BADGE ─── */
+.teacher-badge {
+    background: #e8f8ed !important;
+    color: #1e8449 !important;
+}
+.teacher-badge i {
+    color: #27ae60 !important;
+}
+
+/* ─── WELCOME BANNER ─── */
+.teacher-welcome-banner {
+    background: linear-gradient(135deg, #1e8449, #27ae60);
+    color: #fff;
+    border-radius: 18px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    box-shadow: 0 8px 24px rgba(39, 174, 96, 0.18);
+}
+.teacher-welcome-banner .twb-avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.9rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.teacher-welcome-banner h2 {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+}
+.teacher-welcome-banner p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+.teacher-welcome-banner .twb-classes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+.teacher-welcome-banner .twb-classes span {
+    background: rgba(255,255,255,0.22);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+/* ─── STAT CARDS ─── */
+.teacher-stat .stat-card-icon {
+    color: #27ae60;
+}
+.teacher-stat .stat-card-value {
+    color: #1e8449;
+}
+
+/* ─── BUTTONS ─── */
+.teacher-add-btn {
+    background: #27ae60 !important;
+}
+.teacher-add-btn:hover {
+    box-shadow: 0 12px 24px rgba(39, 174, 96, 0.25) !important;
+}
+.teacher-btn-save {
+    background: #27ae60 !important;
+}
+.teacher-btn-save:hover {
+    background: #1e8449 !important;
+    box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3) !important;
+}
+.teacher-save-btn {
+    background: #27ae60 !important;
+}
+.teacher-save-btn:hover {
+    background: #1e8449 !important;
+}
+
+/* ─── BADGE ─── */
+.teacher-badge-color {
+    background: #27ae60 !important;
+}
+
+/* ─── SEARCH BAR ─── */
+.teacher-search-bar {
+    background: #e8f8ed !important;
+    border-color: #c8ebd4 !important;
+}
+.teacher-search-bar i {
+    color: #27ae60 !important;
+}
+
+/* ─── METRIC CARDS ─── */
+.teacher-metric-card {
+    background: #e8f8ed !important;
+    border-color: #c8ebd4 !important;
+}
+.teacher-metric-card .metric-card-value {
+    color: #1e8449 !important;
+}
+
+/* ─── SUB-TABS ─── */
+.teacher-sub-tab.active {
+    background: #27ae60 !important;
+}
+
+/* ─── SETTINGS CARD ─── */
+.teacher-settings-card {
+    border-top: 4px solid #27ae60 !important;
+}
+
+/* ─── PROFILE GRID ─── */
+.teacher-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+}
+.teacher-profile-item {
+    background: #f8fffa;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid #d4edda;
+}
+.teacher-profile-item .tpi-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #27ae60;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+.teacher-profile-item .tpi-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* ─── MY CLASSES CARDS ─── */
+.teacher-class-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(39, 174, 96, 0.06);
+    border: 1px solid #d4edda;
+    transition: 0.25s;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.teacher-class-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(39, 174, 96, 0.15);
+}
+.teacher-class-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+.teacher-class-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1e8449;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.teacher-class-card-level {
+    display: inline-block;
+    background: #e8f8ed;
+    color: #1e8449;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+.teacher-class-card-status {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    background: #d4edda;
+    color: #155724;
+}
+.teacher-class-card-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.teacher-class-card-stats .tccs-item {
+    display: flex;
+    flex-direction: column;
+}
+.teacher-class-card-stats .tccs-item .num {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #27ae60;
+}
+.teacher-class-card-stats .tccs-item .lbl {
+    font-size: 0.7rem;
+    color: #8c7da1;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+.teacher-class-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+.teacher-class-card-actions button {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.teacher-class-card-actions .view-btn {
+    background: #27ae60;
+    color: #fff;
+}
+.teacher-class-card-actions .view-btn:hover {
+    background: #1e8449;
+}
+.teacher-class-card-actions .students-btn {
+    background: #e8f8ed;
+    color: #1e8449;
+}
+.teacher-class-card-actions .students-btn:hover {
+    background: #d4edda;
+}
+
+/* ─── CLASS GRID ─── */
+.teacher-classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+}
+
+/* ─── TEACHER SUMMARY CARD (Dashboard) ─── */
+.teacher-class-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #ecf0f1;
+}
+.teacher-class-mini:last-child {
+    border-bottom: none;
+}
+.teacher-class-mini .tcm-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.teacher-class-mini .tcm-info {
+    flex: 1;
+}
+.teacher-class-mini .tcm-info h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+.teacher-class-mini .tcm-info p {
+    font-size: 0.8rem;
+    color: #8c7da1;
+}
+.teacher-class-mini .tcm-count {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #27ae60;
+}
+
+/* ─── SCHEDULE MINI ─── */
+.teacher-schedule-mini {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #ecf0f1;
+    align-items: center;
+}
+.teacher-schedule-mini:last-child {
+    border-bottom: none;
+}
+.teacher-schedule-mini .tsm-time {
+    width: 62px;
+    text-align: center;
+    background: #e8f8ed;
+    color: #1e8449;
+    font-weight: 700;
+    padding: 6px 0;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+.teacher-schedule-mini .tsm-info {
+    flex: 1;
+}
+.teacher-schedule-mini .tsm-info h4 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+.teacher-schedule-mini .tsm-info p {
+    font-size: 0.78rem;
+    color: #8c7da1;
+}
+
+/* ─── EXAM STAT GRID ─── */
+.exam-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.exam-stat-grid .exam-stat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #d4edda;
+    text-align: center;
+    transition: 0.2s;
+}
+.exam-stat-grid .exam-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(39, 174, 96, 0.12);
+}
+.exam-stat-grid .stat-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1e8449;
+}
+.exam-stat-grid .stat-label {
+    font-size: 0.85rem;
+    color: #8c7da1;
+    margin-top: 4px;
+}
+.exam-stat-grid .stat-sub {
+    font-size: 0.75rem;
+    margin-top: 6px;
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 20px;
+    background: #e8f8ed;
+    color: #1e8449;
+    font-weight: 600;
+}
+
+/* ─── MY STUDENTS TABLE ─── */
+.teacher-action-icon {
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: 0.2s;
+    color: #27ae60;
+}
+.teacher-action-icon:hover {
+    background: #e8f8ed;
+}
+
+/* ─── PERFORMANCE MODAL (teacher style) ─── */
+#teacherPerfModal .perf-subject-table th {
+    background: #e8f8ed !important;
+    border-bottom: 2px solid #c8ebd4 !important;
+}
+#teacherPerfModal .perf-stat-item {
+    background: #f8fffa !important;
+    border-color: #d4edda !important;
+}
+#teacherPerfModal .perf-stat-item .value {
+    color: #1e8449 !important;
+}
+
+/* ─── TOAST ─── */
+#teacherToast {
+    background: #27ae60 !important;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 992px) {
+    .teacher-welcome-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+    .teacher-welcome-banner .twb-classes {
+        justify-content: center;
+    }
+    .teacher-classes-grid {
+        grid-template-columns: 1fr;
+    }
+    .exam-stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .teacher-profile-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .exam-stat-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TEACHER LOGIN OVERLAY — Full-screen centered layout
+   ═══════════════════════════════════════════════════════════════ */
+#teacherLoginOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    visibility: visible;
+    opacity: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+#teacherLoginOverlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Make sure the card has a max-width and stays centered */
+#teacherLoginOverlay .login-card {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 420px;
+}

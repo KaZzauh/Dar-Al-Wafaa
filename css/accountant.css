@@ -1,0 +1,730 @@
+/* ═══════════════════════════════════════════════════════════════
+   ACCOUNTANT PORTAL – Professional Blue theme
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── LOGIN ─── */
+.accountant-login-card .accountant-logo {
+    background: linear-gradient(135deg, #1e5a99, #2980b9) !important;
+}
+.accountant-login-btn {
+    background: linear-gradient(135deg, #1e5a99, #2980b9) !important;
+}
+.accountant-login-btn:hover {
+    box-shadow: 0 12px 30px rgba(41, 128, 185, 0.35) !important;
+}
+.login-footer .admin-link {
+    color: #8c7da1;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.login-footer .admin-link:hover {
+    color: #6c3a9d;
+}
+
+/* ─── LOGIN OVERLAY ─── */
+#accountantLoginOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e5a99 0%, #2980b9 100%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    visibility: visible;
+    opacity: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+#accountantLoginOverlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+#accountantLoginOverlay .login-card {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 420px;
+}
+
+/* ─── SIDEBAR ─── */
+.accountant-sidebar {
+    background: linear-gradient(135deg, #1e5a99 0%, #2980b9 100%) !important;
+}
+.accountant-sidebar .nav-item.active {
+    border-left-color: #f39c12;
+}
+
+/* ─── BADGE ─── */
+.accountant-badge {
+    background: #e8f2fa !important;
+    color: #1e5a99 !important;
+}
+.accountant-badge i {
+    color: #2980b9 !important;
+}
+.role-badge.accountant {
+    background: #2980b9;
+    color: #fff;
+}
+
+/* ─── WELCOME BANNER ─── */
+.accountant-welcome-banner {
+    background: linear-gradient(135deg, #1e5a99, #2980b9);
+    color: #fff;
+    border-radius: 18px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    box-shadow: 0 8px 24px rgba(41, 128, 185, 0.18);
+}
+.accountant-welcome-banner .awb-avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.9rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.accountant-welcome-banner h2 {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+}
+.accountant-welcome-banner p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ─── STATS ─── */
+.accountant-stat .stat-card-icon { color: #2980b9; }
+.accountant-stat .stat-card-value { color: #1e5a99; }
+
+/* ─── BUTTONS ─── */
+.accountant-add-btn { background: #2980b9 !important; }
+.accountant-add-btn:hover {
+    box-shadow: 0 12px 24px rgba(41, 128, 185, 0.25) !important;
+}
+.accountant-btn-save { background: #2980b9 !important; }
+.accountant-btn-save:hover {
+    background: #1e5a99 !important;
+    box-shadow: 0 8px 20px rgba(41, 128, 185, 0.3) !important;
+}
+.accountant-save-btn { background: #2980b9 !important; }
+.accountant-save-btn:hover { background: #1e5a99 !important; }
+
+/* ─── BADGE COLOR ─── */
+.accountant-badge-color { background: #2980b9 !important; }
+
+/* ─── SEARCH BAR ─── */
+.accountant-search-bar {
+    background: #e8f2fa !important;
+    border-color: #c8dff0 !important;
+}
+.accountant-search-bar i { color: #2980b9 !important; }
+
+/* ─── PAYMENT STATS ROW ─── */
+.payment-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.payment-stats-row .payment-stat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    border: 1px solid #ecf0f1;
+    text-align: center;
+    transition: 0.2s;
+}
+.payment-stats-row .payment-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+.payment-stats-row .stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1e5a99;
+}
+.payment-stats-row .stat-label {
+    font-size: 0.85rem;
+    color: #8c7da1;
+    margin-top: 4px;
+}
+
+/* ─── INSIGHT GRID (Reports) ─── */
+.accountant-insight-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.accountant-insight-card {
+    background: linear-gradient(135deg, #fff 0%, #f0f7fc 100%);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #d4e5f2;
+    text-align: center;
+    transition: 0.2s;
+}
+.accountant-insight-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(41, 128, 185, 0.12);
+}
+.accountant-insight-card .insight-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e5a99;
+}
+.accountant-insight-card .insight-label {
+    font-size: 0.85rem;
+    color: #8c7da1;
+    margin-top: 4px;
+}
+
+/* ─── SETTINGS ─── */
+.accountant-settings-card {
+    border-top: 4px solid #2980b9 !important;
+}
+
+/* ─── PROFILE GRID ─── */
+.accountant-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+}
+.accountant-profile-item {
+    background: #f5faff;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid #d4e5f2;
+}
+.accountant-profile-item .api-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #2980b9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+.accountant-profile-item .api-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* ─── TOAST ─── */
+#accountantToast { background: #2980b9 !important; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 992px) {
+    .accountant-welcome-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+    .accountant-insight-grid { grid-template-columns: repeat(2, 1fr); }
+    .accountant-profile-grid { grid-template-columns: 1fr; }
+    .payment-stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .accountant-insight-grid { grid-template-columns: 1fr; }
+    .payment-stats-row { grid-template-columns: 1fr; }
+}
+
+/* ─── RECENT ITEMS (Payments / Expenses) ─── */
+.acc-recent-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    background: #fafcff;
+    border: 1px solid #e8f2fa;
+    border-radius: 14px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+.acc-recent-item:last-child { margin-bottom: 0; }
+.acc-recent-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+}
+.acc-recent-item.acc-recent-payment::before {
+    background: linear-gradient(180deg, #2980b9, #3498db);
+}
+.acc-recent-item.acc-recent-expense::before {
+    background: linear-gradient(180deg, #e67e22, #f39c12);
+}
+.acc-recent-item:hover {
+    background: #fff;
+    border-color: #c8dff0;
+    transform: translateX(2px);
+    box-shadow: 0 4px 14px rgba(41, 128, 185, 0.08);
+}
+.acc-recent-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+.acc-recent-payment .acc-recent-icon {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+}
+.acc-recent-expense .acc-recent-icon {
+    background: linear-gradient(135deg, #e67e22, #f39c12);
+}
+.acc-recent-icon i { color: #fff !important; }
+.acc-recent-body {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+}
+.acc-recent-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+.acc-recent-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2c3e50;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.acc-recent-amount {
+    font-size: 1rem;
+    font-weight: 800;
+    white-space: nowrap;
+    letter-spacing: -0.3px;
+}
+.acc-amount-in { color: #27ae60; }
+.acc-amount-out { color: #e67e22; }
+.acc-recent-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.acc-recent-desc {
+    font-size: 0.82rem;
+    color: #7f8c8d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 65%;
+}
+.acc-recent-date {
+    font-size: 0.75rem;
+    color: #95a5a6;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+.acc-recent-date i { font-size: 0.7rem; }
+.acc-recent-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-top: 6px;
+}
+.acc-tag-paid { background: #d4edda; color: #155724; }
+.acc-tag-pending { background: #fff3cd; color: #856404; }
+.acc-tag-overdue { background: #f8d7da; color: #721c24; }
+.acc-tag-method { background: #e8f2fa; color: #1e5a99; }
+
+/* ─── EMPTY STATE ─── */
+.acc-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #b0a8c0;
+}
+.acc-empty-state i {
+    font-size: 2.5rem;
+    color: #d6e3f2;
+    margin-bottom: 12px;
+    display: block;
+}
+.acc-empty-state h4 {
+    font-size: 0.95rem;
+    color: #5c728a;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+.acc-empty-state p { font-size: 0.82rem; color: #95a5a6; }
+
+#tabDashboard .section { padding: 20px 22px; }
+#tabDashboard .section h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+@media (max-width: 600px) {
+    .acc-recent-desc { max-width: 100%; white-space: normal; }
+    .acc-recent-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    .acc-recent-amount { font-size: 0.95rem; }
+}
+
+/* ─── FEE SETUP — Blue theme overrides ─── */
+.fee-stat-card {
+    background: linear-gradient(135deg, #fff, #f0f7fc);
+    border-color: #d4e5f2;
+}
+.fee-stat-card:hover { box-shadow: 0 6px 18px rgba(41, 128, 185, 0.12); }
+.fee-stat-value { color: #1e5a99; }
+.fee-level-header {
+    background: linear-gradient(135deg, #f5faff, #eaf4fb);
+}
+.fee-level-header:hover {
+    background: linear-gradient(135deg, #eaf4fb, #dceaf6);
+}
+.fee-level-badge {
+    background: #e8f2fa;
+    color: #1e5a99;
+}
+.fee-class-card {
+    background: #f5faff;
+    border-color: #d4e5f2;
+}
+.fee-class-card:hover {
+    box-shadow: 0 6px 20px rgba(41, 128, 185, 0.12);
+    border-color: #a8cee8;
+}
+.fee-class-name i { color: #2980b9; }
+.fee-class-header { border-bottom-color: #d4e5f2; }
+.fee-term-label { color: #1e5a99; }
+.fee-term-label i { color: #2980b9; }
+.fee-term-sum { color: #1e5a99; background: #e8f2fa; }
+.fee-entry-cat { background: #e8f2fa; color: #1e5a99; }
+.fee-entry-actions i:hover {
+    background: #e8f2fa;
+    color: #2980b9;
+}
+.fee-class-footer { border-top-color: #d4e5f2; }
+.fee-class-add-btn {
+    background: linear-gradient(135deg, #2980b9, #1e5a99);
+}
+.fee-class-add-btn:hover {
+    box-shadow: 0 6px 14px rgba(41, 128, 185, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAYMENT REGISTER — Grouped by Level → Class (Blue theme)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── LEVEL GROUPS ─── */
+#accRegisterGroupsContainer .register-level-group,
+#accRegisterGroupsView .register-level-group {
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #ecf0f1;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.2s;
+}
+#accRegisterGroupsContainer .register-level-group:hover,
+#accRegisterGroupsView .register-level-group:hover {
+    box-shadow: 0 4px 16px rgba(41, 128, 185, 0.1);
+}
+#accRegisterGroupsContainer .register-level-header,
+#accRegisterGroupsView .register-level-header {
+    background: linear-gradient(135deg, #f5faff, #eaf4fb);
+}
+#accRegisterGroupsContainer .register-level-header:hover,
+#accRegisterGroupsView .register-level-header:hover {
+    background: linear-gradient(135deg, #eaf4fb, #dceaf6);
+}
+#accRegisterGroupsContainer .register-level-title,
+#accRegisterGroupsView .register-level-title {
+    color: #1e5a99;
+}
+#accRegisterGroupsContainer .register-level-badge,
+#accRegisterGroupsView .register-level-badge {
+    background: #e8f2fa;
+    color: #1e5a99;
+    font-weight: 700;
+}
+#accRegisterGroupsContainer .register-level-toggle,
+#accRegisterGroupsView .register-level-toggle {
+    color: #2980b9;
+}
+
+/* ─── REGISTER CLASS CARDS ─── */
+#accRegisterGroupsContainer .register-class-card,
+#accRegisterGroupsView .register-class-card {
+    background: #fafcff;
+    border: 1px solid #d4e5f2;
+    border-radius: 14px;
+    padding: 18px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+#accRegisterGroupsContainer .register-class-card::before,
+#accRegisterGroupsView .register-class-card::before {
+    background: linear-gradient(90deg, #1e5a99, #2980b9);
+}
+#accRegisterGroupsContainer .register-class-card:hover,
+#accRegisterGroupsView .register-class-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(41, 128, 185, 0.15);
+    border-color: #a8cee8;
+    background: #fff;
+}
+#accRegisterGroupsContainer .register-class-card-title,
+#accRegisterGroupsView .register-class-card-title {
+    color: #1e5a99;
+}
+#accRegisterGroupsContainer .register-class-card-title i,
+#accRegisterGroupsView .register-class-card-title i {
+    color: #2980b9;
+}
+#accRegisterGroupsContainer .register-class-card-student-count,
+#accRegisterGroupsView .register-class-card-student-count {
+    color: #5c728a;
+}
+#accRegisterGroupsContainer .register-class-card-student-count i,
+#accRegisterGroupsView .register-class-card-student-count i {
+    color: #3498db;
+}
+
+/* ─── STAT TILES ─── */
+#accRegisterGroupsContainer .register-class-stat-item,
+#accRegisterGroupsView .register-class-stat-item {
+    background: #fff;
+    border: 1px solid #d4e5f2;
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+#accRegisterGroupsContainer .register-class-stat-item .stat-label,
+#accRegisterGroupsView .register-class-stat-item .stat-label {
+    color: #5c728a;
+}
+#accRegisterGroupsContainer .register-class-stat-item.expected .stat-value,
+#accRegisterGroupsView .register-class-stat-item.expected .stat-value {
+    color: #1e5a99;
+}
+#accRegisterGroupsContainer .register-class-stat-item.collected .stat-value,
+#accRegisterGroupsView .register-class-stat-item.collected .stat-value {
+    color: #27ae60;
+}
+#accRegisterGroupsContainer .register-class-stat-item.outstanding .stat-value,
+#accRegisterGroupsView .register-class-stat-item.outstanding .stat-value {
+    color: #e74c3c;
+}
+#accRegisterGroupsContainer .register-class-stat-item.progress .stat-value,
+#accRegisterGroupsView .register-class-stat-item.progress .stat-value {
+    color: #2980b9;
+}
+
+/* ─── PROGRESS BAR ─── */
+#accRegisterGroupsContainer .register-class-card-progress .progress-label,
+#accRegisterGroupsView .register-class-card-progress .progress-label {
+    color: #5c728a;
+}
+#accRegisterGroupsContainer .register-class-card-progress .progress-bar,
+#accRegisterGroupsView .register-class-card-progress .progress-bar {
+    background: #e8f2fa;
+}
+
+/* ─── CARD FOOTER + VIEW BUTTON ─── */
+#accRegisterGroupsContainer .register-class-card-actions,
+#accRegisterGroupsView .register-class-card-actions {
+    border-top: 1px solid #d4e5f2;
+}
+#accRegisterGroupsContainer .view-register-btn,
+#accRegisterGroupsView .view-register-btn {
+    background: linear-gradient(135deg, #1e5a99, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s;
+    font-size: 0.85rem;
+    font-family: inherit;
+    width: 100%;
+}
+#accRegisterGroupsContainer .view-register-btn:hover,
+#accRegisterGroupsView .view-register-btn:hover {
+    background: linear-gradient(135deg, #17497b, #2471a3);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(41, 128, 185, 0.35);
+}
+
+/* ─── EMPTY STATE ─── */
+#accRegisterGroupsContainer .register-groups-empty,
+#accRegisterGroupsView .register-groups-empty {
+    background: #fafcff;
+    border: 2px dashed #c8dff0;
+}
+#accRegisterGroupsContainer .register-groups-empty i,
+#accRegisterGroupsView .register-groups-empty i {
+    color: #a8cee8;
+}
+#accRegisterGroupsContainer .register-groups-empty h3,
+#accRegisterGroupsView .register-groups-empty h3 {
+    color: #1e5a99;
+}
+#accRegisterGroupsContainer .register-groups-empty p,
+#accRegisterGroupsView .register-groups-empty p {
+    color: #5c728a;
+}
+
+/* ─── DETAIL VIEW HEADER ─── */
+#accRegisterDetailView .register-detail-header h2 {
+    color: #1e5a99;
+}
+#accRegisterDetailView .register-detail-header h2 i {
+    color: #2980b9;
+}
+#accRegisterDetailView .register-detail-header h2 span {
+    color: #2980b9;
+}
+#accRegisterDetailView .register-detail-header p {
+    color: #5c728a;
+}
+#accRegisterDetailView .register-back-btn {
+    background: #e8f2fa;
+    color: #1e5a99;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+    font-size: 0.88rem;
+    font-family: inherit;
+}
+#accRegisterDetailView .register-back-btn:hover {
+    background: #2980b9;
+    color: #fff;
+    transform: translateX(-2px);
+    box-shadow: 0 8px 18px rgba(41, 128, 185, 0.3);
+}
+
+/* ─── DETAIL SUMMARY CARDS (blue accent) ─── */
+#accRegisterDetailSummaryCards .rsc::before {
+    background: linear-gradient(90deg, #1e5a99, #2980b9);
+}
+#accRegisterDetailSummaryCards .rsc .val {
+    color: #1e5a99;
+}
+
+/* ─── DETAIL TABLE HEADER ─── */
+#accPaymentRegisterTable th {
+    background: #f5faff;
+    color: #1e5a99;
+    border-bottom: 2px solid #d4e5f2;
+}
+#accPaymentRegisterTable td {
+    border-bottom: 1px solid #eaf4fb;
+}
+#accPaymentRegisterTable tbody tr:hover td {
+    background: #fafcff;
+}
+#accPaymentRegisterTable .reg-no { color: #5c728a; }
+#accPaymentRegisterTable .reg-student-id { color: #5c728a; }
+#accPaymentRegisterTable .reg-fee-details .fee-line strong { color: #1e5a99; }
+#accPaymentRegisterTable .reg-amount.due { color: #1e5a99; }
+
+/* ─── VIEW BUTTON (eye icon) ─── */
+#accPaymentRegisterTable .reg-view-btn {
+    background: #e8f2fa;
+    color: #2980b9;
+}
+#accPaymentRegisterTable .reg-view-btn:hover {
+    background: #2980b9;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(41, 128, 185, 0.35);
+}
+
+/* ─── FOOTER SUMMARY (blue) ─── */
+#accRegisterFooterSummary {
+    background: linear-gradient(135deg, #f5faff 0%, #fafcff 100%);
+    border: 1px dashed #c8dff0;
+}
+#accRegisterFooterSummary .rfs-item {
+    border-right: 1px solid #e8f2fa;
+}
+#accRegisterFooterSummary .rfs-item .val {
+    color: #1e5a99;
+}
+#accRegisterFooterSummary .rfs-item .lbl {
+    color: #5c728a;
+}
+
+/* ─── EMPTY DETAIL STATE ─── */
+#accPaymentRegisterTbody .register-empty i {
+    color: #c8dff0;
+}
+#accPaymentRegisterTbody .register-empty h4 {
+    color: #1e5a99;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+    #accRegisterGroupsContainer .register-level-title,
+    #accRegisterGroupsView .register-level-title {
+        font-size: 1rem;
+    }
+    #accRegisterGroupsContainer .register-level-badge,
+    #accRegisterGroupsView .register-level-badge {
+        font-size: 0.7rem;
+        padding: 2px 10px;
+    }
+    #accRegisterDetailView .register-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* ═══════════════ END OF accountant.css ═══════════════ */
