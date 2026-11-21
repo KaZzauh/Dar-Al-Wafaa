@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<title>Dar Al-Wafaa Educational Center Management System</title>
+<link rel="icon" id="dynamicFavicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EE%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginOverlay" role="dialog" aria-modal="true" aria-labelledby="loginSchoolName">
+  <div class="login-card">
+    <div class="login-logo" aria-hidden="true">
+      <img id="loginLogoImg" src="" alt="Logo" style="display:none;" />
+      <i class="fas fa-school" id="loginLogoIcon"></i>
+    </div>
+    <h1 id="loginSchoolName">Dar Al-wafaa Academy</h1>
+    <p class="login-sub">School Management System</p>
+    <form id="loginForm" autocomplete="on" onsubmit="event.preventDefault();">
+      <div class="form-group">
+        <label for="loginUsername"><i class="fas fa-user" aria-hidden="true"></i> Username</label>
+        <input type="text" id="loginUsername" name="username" placeholder="Enter username"
+               autocomplete="username" autocapitalize="none" spellcheck="false" required />
+      </div>
+      <div class="form-group">
+        <label for="loginPassword"><i class="fas fa-lock" aria-hidden="true"></i> Password</label>
+        <input type="password" id="loginPassword" name="password" placeholder="Enter password"
+               autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In</button>
+      <div class="login-error" id="loginError" role="alert" aria-live="polite"></div>
+    </form>
+    
+    <!-- DEVELOPER CREDIT -->
+    <div class="developer-credit">
+      Developed by <strong>Kamil Graphics</strong>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ SIDEBAR ============ -->
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+<nav class="sidebar" id="sidebar" aria-label="Main navigation">
+  <div class="sidebar-header">
+    <img class="logo-img" id="sidebarLogo" src="" alt="" style="display:none;" />
+    <div class="logo-icon-fallback" id="sidebarLogoIcon" style="display:none; font-size: 2.8rem; margin-bottom: 10px; color: #fff;">
+      <i class="fas fa-school"></i>
+    </div>
+    <div class="logo-text" id="sidebarSchoolName">Elite Minds</div>
+    <div class="logo-sub">School Management</div>
+  </div>
+  <div class="sidebar-nav" id="sidebarNav">
+    <button type="button" class="nav-item active" data-tab="dashboard" data-roles="all"><i class="fas fa-chart-line" aria-hidden="true"></i> Dashboard</button>
+    <button type="button" class="nav-item" data-tab="smartAnalytics" data-roles="admin,principal,accountant"><i class="fas fa-lightbulb" aria-hidden="true"></i> Smart Analytics</button>
+    <button type="button" class="nav-item" data-tab="students" data-roles="admin,principal,registrar,teacher,accountant"><i class="fas fa-user-graduate" aria-hidden="true"></i> Students</button>
+    <button type="button" class="nav-item" data-tab="classes" data-roles="admin,principal,registrar"><i class="fas fa-chalkboard" aria-hidden="true"></i> Classes</button>
+    <button type="button" class="nav-item" data-tab="subjects" data-roles="admin,principal,registrar,teacher"><i class="fas fa-book" aria-hidden="true"></i> Subjects</button>
+    <button type="button" class="nav-item" data-tab="staff" data-roles="admin,principal"><i class="fas fa-chalkboard-user" aria-hidden="true"></i> Staff / Teachers</button>
+    <button type="button" class="nav-item" data-tab="attendance" data-roles="admin,principal,teacher"><i class="fas fa-clipboard-check" aria-hidden="true"></i> Attendance</button>
+    <button type="button" class="nav-item" data-tab="staffAttendance" data-roles="admin,principal"><i class="fas fa-user-clock" aria-hidden="true"></i> Staff Attendance</button>
+    <button type="button" class="nav-item" data-tab="exams" data-roles="admin,principal,teacher"><i class="fas fa-file-lines" aria-hidden="true"></i> Exams</button>
+    <button type="button" class="nav-item" data-tab="results" data-roles="admin,principal,teacher"><i class="fas fa-award" aria-hidden="true"></i> Results / Grades</button>
+    <button type="button" class="nav-item" data-tab="fees" data-roles="admin,principal,accountant"><i class="fas fa-money-bill-wave" aria-hidden="true"></i> Fee Collection</button>
+    <button type="button" class="nav-item" data-tab="payments" data-roles="admin,principal,accountant"><i class="fas fa-receipt" aria-hidden="true"></i> Fee Records</button>
+    <button type="button" class="nav-item" data-tab="outstanding" data-roles="admin,principal,accountant"><i class="fas fa-hand-holding-dollar" aria-hidden="true"></i> Outstanding Fees</button>
+    <button type="button" class="nav-item" data-tab="expenses" data-roles="admin,principal,accountant"><i class="fas fa-wallet" aria-hidden="true"></i> Expenses</button>
+    <button type="button" class="nav-item" data-tab="reports" data-roles="admin,principal,accountant"><i class="fas fa-chart-pie" aria-hidden="true"></i> Reports</button>
+    <button type="button" class="nav-item" data-tab="settings" data-roles="admin"><i class="fas fa-cog" aria-hidden="true"></i> Settings</button>
+  </div>
+</nav>
+
+<!-- ============ MAIN ============ -->
+<main class="main-content" id="mainContent">
+<div class="app-container">
+
+  <header class="top-header">
+    <div class="top-header-left">
+      <button class="hamburger-toggle" id="hamburgerToggle" type="button"
+              aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+      <div class="page-title"><span id="pageTitleSpan">Elite Minds Academy</span></div>
+    </div>
+    <div class="top-header-right">
+      <div class="user-badge">
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+        <span id="userDisplayName">Admin</span>
+        <span class="role-chip" id="userRoleChip">Admin</span>
+      </div>
+      <button class="logout-btn" id="logoutBtn" type="button"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</button>
+    </div>
+  </header>
+
+  <!-- ═══════════ DASHBOARD ═══════════ -->
+  <section id="tabDashboard" class="tab-content active" role="region" aria-label="Dashboard">
+    <div class="header">
+      <h1>School Dashboard</h1>
+      <p>Live overview of <span id="dashboardSchoolName">Elite Minds Academy</span></p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-card-title">Total Students</div><div class="stat-card-value" id="kpiStudents">—</div><div class="stat-card-change" id="kpiStudentsSub">enrolled</div><div class="stat-card-icon"><i class="fas fa-user-graduate" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Active Students</div><div class="stat-card-value" id="kpiActiveStudents">—</div><div class="stat-card-change">currently enrolled</div><div class="stat-card-icon"><i class="fas fa-user-check" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Classes</div><div class="stat-card-value" id="kpiClasses">—</div><div class="stat-card-change">active classes</div><div class="stat-card-icon"><i class="fas fa-chalkboard" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Staff Members</div><div class="stat-card-value" id="kpiStaff">—</div><div class="stat-card-change">teaching &amp; non-teaching</div><div class="stat-card-icon"><i class="fas fa-chalkboard-user" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Present Today</div><div class="stat-card-value" id="kpiPresentToday">—</div><div class="stat-card-change">students marked</div><div class="stat-card-icon"><i class="fas fa-check-circle" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Absent Today</div><div class="stat-card-value" id="kpiAbsentToday">—</div><div class="stat-card-change">students absent</div><div class="stat-card-icon"><i class="fas fa-user-xmark" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Attendance Rate</div><div class="stat-card-value" id="kpiAttendRate">—</div><div class="stat-card-change">today</div><div class="stat-card-icon"><i class="fas fa-percent" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Fees Collected Today</div><div class="stat-card-value" id="kpiFeesToday">—</div><div class="stat-card-change" id="kpiFeesTodaySub">0 payments</div><div class="stat-card-icon"><i class="fas fa-money-bill-wave" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Fees This Month</div><div class="stat-card-value" id="kpiFeesMonth">—</div><div class="stat-card-change">current month</div><div class="stat-card-icon"><i class="fas fa-calendar-alt" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Outstanding Fees</div><div class="stat-card-value" id="kpiOutstanding">—</div><div class="stat-card-change" id="kpiOutstandingSub">0 students owing</div><div class="stat-card-icon"><i class="fas fa-hand-holding-dollar" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Total Expenses</div><div class="stat-card-value" id="kpiExpenses">—</div><div class="stat-card-change">all time</div><div class="stat-card-icon"><i class="fas fa-wallet" aria-hidden="true"></i></div></div>
+      <div class="stat-card"><div class="stat-card-title">Net Balance</div><div class="stat-card-value" id="kpiNet">—</div><div class="stat-card-change">collected − expenses</div><div class="stat-card-icon"><i class="fas fa-scale-balanced" aria-hidden="true"></i></div></div>
+    </div>
+
+    <div class="analytics-row">
+      <div class="analytics-card"><h3><i class="fas fa-chart-bar" aria-hidden="true"></i> Students per Class</h3><div class="chart-container"><canvas id="chartEnrollment"></canvas></div></div>
+      <div class="analytics-card"><h3><i class="fas fa-chart-line" aria-hidden="true"></i> Attendance Trend (Last 14 Days)</h3><div class="chart-container"><canvas id="chartAttendance"></canvas></div></div>
+      <div class="analytics-card"><h3><i class="fas fa-chart-line" aria-hidden="true"></i> Fee Collection (Last 14 Days)</h3><div class="chart-container"><canvas id="chartFees"></canvas></div></div>
+      <div class="analytics-card"><h3><i class="fas fa-chart-bar" aria-hidden="true"></i> Monthly Fee Collection (This Year)</h3><div class="chart-container"><canvas id="chartMonthlyFees"></canvas></div></div>
+      <div class="analytics-card"><h3><i class="fas fa-chart-bar" aria-hidden="true"></i> Expenses by Category</h3><div class="chart-container"><canvas id="chartExpenses"></canvas></div></div>
+      <div class="analytics-card"><h3><i class="fas fa-chart-pie" aria-hidden="true"></i> Gender Distribution</h3><div class="chart-container"><canvas id="chartGender"></canvas></div></div>
+    </div>
+
+    <div class="content-sections">
+      <div class="section"><h2><i class="fas fa-receipt" aria-hidden="true"></i> Recent Fee Payments</h2><div id="recentPaymentsList"></div></div>
+      <div class="section"><h2><i class="fas fa-user-plus" aria-hidden="true"></i> Recent Admissions</h2><div id="recentStudentsList"></div></div>
+      <div class="section"><h2><i class="fas fa-wallet" aria-hidden="true"></i> Recent Expenses</h2><div id="recentExpensesList"></div></div>
+      <div class="section alert-section"><h2><i class="fas fa-triangle-exclamation" aria-hidden="true"></i> Outstanding Fee Alerts</h2><div id="outstandingAlertList"></div></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SMART ANALYTICS ═══════════ -->
+  <section id="tabSmartAnalytics" class="tab-content" role="region" aria-label="Smart Analytics">
+    <div class="page-header">
+      <div>
+        <h1><i class="fas fa-lightbulb" aria-hidden="true"></i> Smart Analytics</h1>
+        <p class="page-subtitle">AI-powered insights about your school's performance — updated automatically</p>
+      </div>
+      <div class="page-actions">
+        <button class="add-btn btn-purple" id="refreshSmartBtn"><i class="fas fa-rotate" aria-hidden="true"></i> Refresh</button>
+        <button class="export-csv-btn" id="exportSmartBtn"><i class="fas fa-file-csv" aria-hidden="true"></i> Export Report</button>
+        <button class="add-btn btn-dark" id="printSmartBtn"><i class="fas fa-print" aria-hidden="true"></i> Print</button>
+      </div>
+    </div>
+    <div id="smartAnalyticsContent"></div>
+  </section>
+
+  <!-- ═══════════ STUDENTS ═══════════ -->
+  <section id="tabStudents" class="tab-content" role="region" aria-label="Students">
+    <div class="page-header">
+      <div><h1><i class="fas fa-user-graduate" aria-hidden="true"></i> Students</h1><p class="page-subtitle">Student records, enrolment and guardians</p></div>
+      <div class="page-actions">
+        <button class="add-btn" id="addStudentBtn"><i class="fas fa-plus-circle" aria-hidden="true"></i> Admit Student</button>
+        <button class="export-csv-btn" onclick="exportCSV('students')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button>
+      </div>
+    </div>
+    <div class="panel-metric-row">
+      <div class="metric-card"><div class="metric-card-title">Total Students</div><div class="metric-card-value" id="stuMetricTotal">0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Active</div><div class="metric-card-value" id="stuMetricActive">0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Male / Female</div><div class="metric-card-value" id="stuMetricGender">0 / 0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Admitted This Month</div><div class="metric-card-value" id="stuMetricNew">0</div></div>
+    </div>
+    <div class="panel-toolbar">
+      <div class="search-bar">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" id="searchStudents" placeholder="Search by name, student ID, guardian or phone..." aria-label="Search students" />
+      </div>
+      <select id="studentClassFilter" class="select-filter" aria-label="Filter by class"><option value="All">All Classes</option></select>
+      <select id="studentStatusFilter" class="select-filter" aria-label="Filter by status"><option value="All">All Status</option><option>Active</option><option>Inactive</option><option>Graduated</option><option>Transferred</option></select>
+    </div>
+    <div class="table-card">
+      <div class="table-title"><span>All Students</span><span id="studentCountBadge" class="badge">0</span></div>
+      <div class="table-wrapper"><table><thead><tr><th>Student</th><th>Class</th><th>Age / Gender</th><th>Parent Info</th><th>Location</th><th>Admission Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="studentsTbody"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CLASSES ═══════════ -->
+  <section id="tabClasses" class="tab-content" role="region" aria-label="Classes">
+
+    <div id="classesLevelsView">
+      <div class="page-header">
+        <div>
+          <h1><i class="fas fa-book-open" aria-hidden="true"></i> Class Management</h1>
+          <p class="page-subtitle">View all classes grouped by academic level – click a level header to expand/collapse</p>
+        </div>
+        <div class="page-actions">
+          <button class="add-btn" id="addClassBtn"><i class="fas fa-plus-circle" aria-hidden="true"></i> Add Class</button>
+          <button class="export-csv-btn" onclick="exportCSV('classes')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button>
+        </div>
+      </div>
+
+      <div class="class-metrics-row">
+        <div class="class-metric-card"><div class="cmc-value" id="clsMetricTotal">0</div><div class="cmc-label">Total Classes</div></div>
+        <div class="class-metric-card"><div class="cmc-value" id="clsMetricActive">0</div><div class="cmc-label">Active Classes</div></div>
+        <div class="class-metric-card"><div class="cmc-value" id="clsMetricEnrolled">0</div><div class="cmc-label">Total Students Enrolled</div></div>
+        <div class="class-metric-card"><div class="cmc-value" id="clsMetricAvg">0</div><div class="cmc-label">Avg Students Per Class</div></div>
+      </div>
+
+      <div class="class-toolbar">
+        <div class="search-bar">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <input type="text" id="classSearch" placeholder="Search by class name or level..." aria-label="Search classes" />
+        </div>
+        <select id="classLevelFilter" class="select-filter" aria-label="Filter by level"><option value="All">All Levels</option></select>
+      </div>
+
+      <div id="levelGroups"></div>
+    </div>
+
+    <div id="classDetailView" style="display:none;">
+      <div class="class-detail-page-header">
+        <div>
+          <h1 id="classDetailPageTitle">Class</h1>
+          <p id="classDetailPageSub">Manage students and exams</p>
+        </div>
+        <button class="back-btn" type="button" onclick="backToLevels()"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back</button>
+      </div>
+
+      <div class="sub-tabs">
+        <button class="sub-tab active" data-classviewtab="students"><i class="fas fa-users" aria-hidden="true"></i> Students</button>
+        <button class="sub-tab" data-classviewtab="exams"><i class="fas fa-file-lines" aria-hidden="true"></i> Exams</button>
+      </div>
+
+      <div id="classStudentsView" class="subtab-content active-subtab"></div>
+      <div id="classExamsView" class="subtab-content"></div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════ SUBJECTS ═══════════ -->
+  <section id="tabSubjects" class="tab-content" role="region" aria-label="Subjects">
+    <div class="page-header">
+      <div>
+        <h1><i class="fas fa-book" aria-hidden="true"></i> Subjects</h1>
+        <p class="page-subtitle">Master subject list shared across all classes — teachers pick from this list when creating exams</p>
+      </div>
+      <div class="page-actions">
+        <button class="add-btn" id="addSubjectBtn"><i class="fas fa-plus-circle" aria-hidden="true"></i> Add Subject</button>
+        <button class="export-csv-btn" onclick="exportCSV('subjects')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button>
+      </div>
+    </div>
+    <div class="panel-toolbar">
+      <div class="search-bar">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" id="searchSubjects" placeholder="Search subjects..." aria-label="Search subjects" />
+      </div>
+      <div class="select-filter shared-pill">
+        <i class="fas fa-globe" aria-hidden="true"></i>
+        <span>Shared across all classes</span>
+      </div>
+    </div>
+    <div class="table-card">
+      <div class="table-title"><span>All Subjects</span><span id="subjectCountBadge" class="badge">0</span></div>
+      <div class="table-wrapper"><table><thead><tr><th>Subject</th><th>Code</th><th>Assigned Teacher</th><th>Status</th><th>Actions</th></tr></thead><tbody id="subjectsTbody"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ STAFF ═══════════ -->
+  <section id="tabStaff" class="tab-content" role="region" aria-label="Staff">
+    <div class="page-header">
+      <div><h1><i class="fas fa-chalkboard-user" aria-hidden="true"></i> Staff &amp; Teachers</h1><p class="page-subtitle">Manage teaching and non-teaching staff</p></div>
+      <div class="page-actions">
+        <button class="add-btn" id="addStaffBtn"><i class="fas fa-plus-circle" aria-hidden="true"></i> Add Staff</button>
+        <button class="export-csv-btn" onclick="exportCSV('staff')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button>
+      </div>
+    </div>
+    <div class="panel-metric-row">
+      <div class="metric-card"><div class="metric-card-title">Total Staff</div><div class="metric-card-value" id="staffMetricTotal">0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Active</div><div class="metric-card-value" id="staffMetricActive">0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Departments</div><div class="metric-card-value" id="staffMetricDepts">0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Monthly Payroll</div><div class="metric-card-value" id="staffMetricPayroll">—</div></div>
+    </div>
+    <div class="panel-toolbar">
+      <div class="search-bar">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" id="searchStaff" placeholder="Search by name, position or phone..." aria-label="Search staff" />
+      </div>
+      <select id="staffDeptFilter" class="select-filter" aria-label="Filter by department"><option value="All">All Departments</option></select>
+      <select id="staffStatusFilter" class="select-filter" aria-label="Filter by status"><option value="All">All Status</option><option>Active</option><option>Inactive</option></select>
+    </div>
+    <div class="table-card">
+      <div class="table-title"><span>Staff</span><span id="staffCountBadge" class="badge">0</span></div>
+      <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Position</th><th>Department</th><th>Phone</th><th>Salary</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead><tbody id="staffTbody"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ ATTENDANCE ═══════════ -->
+  <section id="tabAttendance" class="tab-content" role="region" aria-label="Student Attendance">
+    <div class="page-header">
+      <div><h1><i class="fas fa-clipboard-check" aria-hidden="true"></i> Student Attendance</h1><p class="page-subtitle">Mark daily attendance per class and review attendance rates</p></div>
+      <div class="page-actions"><button class="export-csv-btn" onclick="exportCSV('attendance')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button></div>
+    </div>
+    <div class="sub-tabs">
+      <button class="sub-tab active" data-attendsub="mark"><i class="fas fa-check-square" aria-hidden="true"></i> Mark Attendance</button>
+      <button class="sub-tab" data-attendsub="summary"><i class="fas fa-chart-bar" aria-hidden="true"></i> Summary</button>
+    </div>
+    <div id="attendMark" class="subtab-content active-subtab">
+      <div class="attend-controls">
+        <div><label for="attendDate">Date</label><input type="date" id="attendDate" data-max-today /></div>
+        <div><label for="attendClass">Class</label><select id="attendClass"><option value="">-- Select Class --</option></select></div>
+        <div class="attend-controls-actions">
+          <button class="btn-save btn-green" id="markAllPresentBtn" type="button"><i class="fas fa-check-double" aria-hidden="true"></i> All Present</button>
+          <button class="btn-save btn-red" id="clearAttendanceBtn" type="button"><i class="fas fa-eraser" aria-hidden="true"></i> Clear Day</button>
+        </div>
+      </div>
+      <div id="attendanceGrid" class="attendance-grid-wrapper"></div>
+    </div>
+    <div id="attendSummary" class="subtab-content">
+      <div class="attend-controls">
+        <div><label for="attendFrom">From</label><input type="date" id="attendFrom" data-max-today /></div>
+        <div><label for="attendTo">To</label><input type="date" id="attendTo" data-max-today /></div>
+        <div><label for="attendSummaryClass">Class</label><select id="attendSummaryClass"><option value="All">All Classes</option></select></div>
+        <div class="attend-controls-actions"><button class="btn-save btn-blue" id="applyAttendFilter" type="button"><i class="fas fa-filter" aria-hidden="true"></i> Apply</button></div>
+      </div>
+      <div class="table-card mt-20">
+        <div class="table-title"><span>Attendance Summary</span><span class="badge" id="attendSummaryCount">0</span></div>
+        <div class="table-wrapper"><table><thead><tr><th>Student</th><th>Class</th><th>Days Marked</th><th class="text-success">Present</th><th class="text-danger">Absent</th><th class="text-warning">Late</th><th class="text-info">Excused</th><th>Rate</th></tr></thead><tbody id="attendSummaryTbody"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ STAFF ATTENDANCE ═══════════ -->
+  <section id="tabStaffAttendance" class="tab-content" role="region" aria-label="Staff Attendance">
+    <div class="page-header">
+      <div><h1><i class="fas fa-user-clock" aria-hidden="true"></i> Staff Attendance</h1><p class="page-subtitle">Mark daily attendance and sign in / sign out for teachers and staff</p></div>
+      <div class="page-actions"><button class="export-csv-btn" onclick="exportCSV('staffAttendance')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button></div>
+    </div>
+    <div class="sub-tabs">
+      <button class="sub-tab active" data-staffattendsub="mark"><i class="fas fa-check-square" aria-hidden="true"></i> Mark Attendance</button>
+      <button class="sub-tab" data-staffattendsub="summary"><i class="fas fa-chart-bar" aria-hidden="true"></i> Summary</button>
+    </div>
+    <div id="staffAttendMark" class="subtab-content active-subtab">
+      <div class="attend-controls">
+        <div><label for="staffAttendDate">Date</label><input type="date" id="staffAttendDate" data-max-today /></div>
+        <div><label for="staffAttendDept">Department</label><select id="staffAttendDept"><option value="All">All Departments</option></select></div>
+        <div class="attend-controls-actions">
+          <button class="btn-save btn-green" id="staffMarkAllPresentBtn" type="button"><i class="fas fa-check-double" aria-hidden="true"></i> All Present</button>
+          <button class="btn-save btn-blue" id="staffSignInAllBtn" type="button"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In All</button>
+          <button class="btn-save btn-orange" id="staffSignOutAllBtn" type="button"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Sign Out All</button>
+          <button class="btn-save btn-red" id="staffClearAttendanceBtn" type="button"><i class="fas fa-eraser" aria-hidden="true"></i> Clear Day</button>
+        </div>
+      </div>
+      <div class="staff-attendance-stats" id="staffAttendStats"></div>
+      <div id="staffAttendanceGrid" class="attendance-grid-wrapper"></div>
+    </div>
+    <div id="staffAttendSummary" class="subtab-content">
+      <div class="attend-controls">
+        <div><label for="staffAttendFrom">From</label><input type="date" id="staffAttendFrom" data-max-today /></div>
+        <div><label for="staffAttendTo">To</label><input type="date" id="staffAttendTo" data-max-today /></div>
+        <div><label for="staffAttendSummaryDept">Department</label><select id="staffAttendSummaryDept"><option value="All">All Departments</option></select></div>
+        <div class="attend-controls-actions"><button class="btn-save btn-blue" id="applyStaffAttendFilter" type="button"><i class="fas fa-filter" aria-hidden="true"></i> Apply</button></div>
+      </div>
+      <div class="table-card mt-20">
+        <div class="table-title"><span>Staff Attendance Summary</span><span class="badge" id="staffAttendSummaryCount">0</span></div>
+        <div class="table-wrapper"><table><thead><tr><th>Staff</th><th>Position</th><th>Department</th><th>Days Marked</th><th class="text-success">Present</th><th class="text-danger">Absent</th><th class="text-warning">Late</th><th class="text-info">Leave</th><th>Rate</th></tr></thead><tbody id="staffAttendSummaryTbody"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ EXAMS ═══════════ -->
+  <section id="tabExams" class="tab-content" role="region" aria-label="Exams">
+    <div class="page-header">
+      <div>
+        <h1><i class="fas fa-file-lines" aria-hidden="true"></i> Exams &amp; Reports</h1>
+        <p class="page-subtitle">Create exams, record grades, and view performance reports</p>
+      </div>
+      <div class="page-actions">
+        <button class="add-btn" id="addExamBtn"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Exam</button>
+        <button class="add-btn" id="refreshExamsBtn"><i class="fas fa-rotate" aria-hidden="true"></i> Refresh</button>
+        <button class="export-csv-btn" onclick="exportCSV('exams')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button>
+      </div>
+    </div>
+
+    <div class="exams-metric-row">
+      <div class="exams-metric-card"><div class="emc-value" id="examMetricTotal">0</div><div class="emc-label">Total Exams</div><div class="emc-pill">All exams</div></div>
+      <div class="exams-metric-card"><div class="emc-value" id="examMetricCompleted">0</div><div class="emc-label">Completed</div><div class="emc-pill">With grades</div></div>
+      <div class="exams-metric-card"><div class="emc-value" id="examMetricUpcoming">0</div><div class="emc-label">Upcoming</div><div class="emc-pill">Scheduled</div></div>
+      <div class="exams-metric-card"><div class="emc-value" id="examMetricAvg">0%</div><div class="emc-label">Avg Score</div><div class="emc-pill">Across all exams</div></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-title">
+        <span><i class="fas fa-layer-group" aria-hidden="true"></i> All Exams — Grouped by Class</span>
+        <span class="badge" id="examCountBadge">0</span>
+      </div>
+      <div id="examsGroupedView"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ RESULTS ═══════════ -->
+  <section id="tabResults" class="tab-content" role="region" aria-label="Results and Grades">
+    <div class="page-header">
+      <div><h1><i class="fas fa-award" aria-hidden="true"></i> Results &amp; Grades</h1><p class="page-subtitle">Enter scores per exam, class and subject</p></div>
+      <div class="page-actions"><button class="export-csv-btn" onclick="exportCSV('grades')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button></div>
+    </div>
+
+    <div class="table-card mb-22">
+      <div class="table-title"><span><i class="fas fa-pen-to-square" aria-hidden="true"></i> Score Entry</span></div>
+      <div class="panel-toolbar mb-14">
+        <select id="resExam" class="select-filter" aria-label="Exam"><option value="">-- Exam --</option></select>
+        <select id="resClass" class="select-filter" aria-label="Class"><option value="">-- Class --</option></select>
+        <select id="resSubject" class="select-filter" aria-label="Subject"><option value="">-- Subject --</option></select>
+        <input type="number" id="resMax" class="select-filter res-max-input" value="100" min="1" step="1" inputmode="numeric" aria-label="Maximum score" title="Maximum score" />
+        <button class="add-btn btn-blue" id="loadResultsBtn"><i class="fas fa-download" aria-hidden="true"></i> Load Students</button>
+      </div>
+      <div id="resultEntryArea"><div class="list-empty">Choose an exam, class and subject, then click "Load Students".</div></div>
+      <div id="resultSaveBar" class="result-save-bar">
+        <button class="btn-save btn-green" id="saveResultsBtn"><i class="fas fa-save" aria-hidden="true"></i> Save Results</button>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-title"><span>Recorded Results</span><span id="gradeCountBadge" class="badge">0</span></div>
+      <div class="panel-toolbar mb-14">
+        <div class="search-bar">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <input type="text" id="searchGrades" placeholder="Search by student, subject or exam..." aria-label="Search results" />
+        </div>
+        <select id="gradeExamFilter" class="select-filter" aria-label="Filter by exam"><option value="All">All Exams</option></select>
+      </div>
+      <div class="table-wrapper"><table><thead><tr><th>Exam</th><th>Student</th><th>Class</th><th>Subject</th><th>Score</th><th>%</th><th>Grade</th><th>Remarks</th><th>Actions</th></tr></thead><tbody id="gradesTbody"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FEE COLLECTION ═══════════ -->
+  <section id="tabFees" class="tab-content" role="region" aria-label="Fee Collection">
+    <div class="page-header">
+      <div><h1><i class="fas fa-money-bill-wave" aria-hidden="true"></i> Fee Collection</h1><p class="page-subtitle">Select a student and record a fee payment</p></div>
+    </div>
+    <div class="fee-layout">
+      <div class="fee-left">
+        <div class="panel-toolbar">
+          <div class="search-bar">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input type="text" id="feeSearch" placeholder="Search student by name or ID..." aria-label="Search students for fee collection" />
+          </div>
+          <select id="feeClassFilter" class="select-filter" aria-label="Filter by class"><option value="All">All Classes</option></select>
+        </div>
+        <div class="fee-grid" id="feeGrid"></div>
+      </div>
+      <div class="fee-right" id="feePanel"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FEE RECORDS ═══════════ -->
+  <section id="tabPayments" class="tab-content" role="region" aria-label="Fee Records">
+    <div class="page-header">
+      <div><h1><i class="fas fa-receipt" aria-hidden="true"></i> Fee Records</h1><p class="page-subtitle">All fee payments and receipts</p></div>
+      <div class="page-actions"><button class="export-csv-btn" onclick="exportCSV('payments')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button></div>
+    </div>
+    <div class="panel-metric-row">
+      <div class="metric-card"><div class="metric-card-title">Total Collected</div><div class="metric-card-value" id="payMetricTotal">—</div></div>
+      <div class="metric-card"><div class="metric-card-title">Payments</div><div class="metric-card-value" id="payMetricCount">0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Collected This Month</div><div class="metric-card-value" id="payMetricMonth">—</div></div>
+      <div class="metric-card"><div class="metric-card-title">Collected Today</div><div class="metric-card-value" id="payMetricToday">—</div></div>
+    </div>
+    <div class="panel-toolbar">
+      <div class="search-bar">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" id="searchPayments" placeholder="Search by receipt, student or cashier..." aria-label="Search payments" />
+      </div>
+      <select id="paymentMethodFilter" class="select-filter" aria-label="Filter by payment method"><option value="All">All Methods</option><option>Cash</option><option>Bank Transfer</option><option>Mobile Money</option><option>Cheque</option><option>Card</option></select>
+    </div>
+    <div class="table-card">
+      <div class="table-title"><span>Fee Payments</span><span id="paymentCountBadge" class="badge">0</span></div>
+      <div class="table-wrapper"><table><thead><tr><th>Receipt #</th><th>Date</th><th>Student</th><th>Class</th><th>Term</th><th>Amount</th><th>Method</th><th>Received By</th><th>Actions</th></tr></thead><tbody id="paymentsTbody"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ OUTSTANDING FEES ═══════════ -->
+  <section id="tabOutstanding" class="tab-content" role="region" aria-label="Outstanding Fees">
+    <div class="page-header">
+      <div><h1><i class="fas fa-hand-holding-dollar" aria-hidden="true"></i> Outstanding Fees</h1><p class="page-subtitle">Track unpaid and partly paid student fees</p></div>
+      <div class="page-actions"><button class="export-csv-btn" onclick="exportCSV('outstanding')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button></div>
+    </div>
+    <div class="panel-metric-row">
+      <div class="metric-card"><div class="metric-card-title">Total Outstanding</div><div class="metric-card-value" id="outTotal">—</div></div>
+      <div class="metric-card"><div class="metric-card-title">Students Owing</div><div class="metric-card-value" id="outStudents">0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Fully Paid</div><div class="metric-card-value text-success" id="outPaidCount">0</div></div>
+      <div class="metric-card"><div class="metric-card-title">Expected Fees (Total)</div><div class="metric-card-value" id="outExpected">—</div></div>
+    </div>
+    <div class="panel-toolbar">
+      <div class="search-bar">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" id="searchOutstanding" placeholder="Search student..." aria-label="Search outstanding fees" />
+      </div>
+      <select id="outstandingClassFilter" class="select-filter" aria-label="Filter by class"><option value="All">All Classes</option></select>
+    </div>
+    <div class="table-card">
+      <div class="table-title"><span>Student Balances</span><span class="badge" id="outCountBadge">0</span></div>
+      <div class="table-wrapper"><table><thead><tr><th>Student</th><th>Student ID</th><th>Class</th><th>Guardian Phone</th><th>Total Fee</th><th>Paid</th><th>Outstanding</th><th>Status</th><th>Actions</th></tr></thead><tbody id="outstandingTbody"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ EXPENSES ═══════════ -->
+  <section id="tabExpenses" class="tab-content" role="region" aria-label="Expenses">
+    <div class="page-header">
+      <div><h1><i class="fas fa-wallet" aria-hidden="true"></i> Expenses</h1><p class="page-subtitle">Salaries, utilities, supplies, maintenance and more</p></div>
+      <div class="page-actions">
+        <button class="add-btn" id="addExpenseBtn"><i class="fas fa-plus-circle" aria-hidden="true"></i> Record Expense</button>
+        <button class="export-csv-btn" onclick="exportCSV('expenses')"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button>
+      </div>
+    </div>
+    <div class="panel-metric-row">
+      <div class="metric-card"><div class="metric-card-title">Today</div><div class="metric-card-value" id="expMetricToday">—</div></div>
+      <div class="metric-card"><div class="metric-card-title">This Week</div><div class="metric-card-value" id="expMetricWeek">—</div></div>
+      <div class="metric-card"><div class="metric-card-title">This Month</div><div class="metric-card-value" id="expMetricMonth">—</div></div>
+      <div class="metric-card"><div class="metric-card-title">All Time</div><div class="metric-card-value" id="expMetricTotal">—</div></div>
+    </div>
+    <div class="panel-toolbar">
+      <div class="search-bar">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" id="searchExpenses" placeholder="Search expenses..." aria-label="Search expenses" />
+      </div>
+      <select id="expenseCategoryFilter" class="select-filter" aria-label="Filter by category"><option value="All">All Categories</option></select>
+    </div>
+    <div class="table-card">
+      <div class="table-title"><span>Expenses</span><span id="expenseCountBadge" class="badge">0</span></div>
+      <div class="table-wrapper"><table><thead><tr><th>Date</th><th>Title</th><th>Category</th><th>Amount</th><th>Method</th><th>Recorded By</th><th>Reference</th><th>Actions</th></tr></thead><tbody id="expensesTbody"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ REPORTS ═══════════ -->
+  <section id="tabReports" class="tab-content" role="region" aria-label="Reports">
+    <div class="page-header">
+      <div><h1><i class="fas fa-chart-pie" aria-hidden="true"></i> Reports</h1><p class="page-subtitle">Enrolment, attendance, results, fees and financial reports</p></div>
+      <div class="page-actions">
+        <button class="add-btn btn-green" id="runReportBtn"><i class="fas fa-play" aria-hidden="true"></i> Generate</button>
+        <button class="export-csv-btn" id="exportReportBtn"><i class="fas fa-file-csv" aria-hidden="true"></i> Export CSV</button>
+        <button class="add-btn btn-dark" id="printReportBtn"><i class="fas fa-print" aria-hidden="true"></i> Print</button>
+      </div>
+    </div>
+    <div class="panel-toolbar">
+      <select id="reportType" class="select-filter" aria-label="Report type">
+        <option value="students">Student Register</option>
+        <option value="enrollment">Enrolment by Class</option>
+        <option value="gender">Enrolment by Gender</option>
+        <option value="attendance">Attendance by Student</option>
+        <option value="attendanceClass">Attendance by Class</option>
+        <option value="results">Results Report</option>
+        <option value="performance">Class Performance</option>
+        <option value="fees">Fee Collection Report</option>
+        <option value="outstanding">Outstanding Fees</option>
+        <option value="expenses">Expenses Report</option>
+        <option value="financial">Financial Summary</option>
+      </select>
+      <input type="date" id="reportFrom" class="select-filter" aria-label="Report from date" data-max-today />
+      <input type="date" id="reportTo" class="select-filter" aria-label="Report to date" data-max-today />
+    </div>
+    <div class="table-card" id="reportOutput">
+      <div class="report-placeholder"><i class="fas fa-chart-pie" aria-hidden="true"></i><p>Choose a report type and date range, then click <strong>Generate</strong>.</p></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SETTINGS ═══════════ -->
+  <section id="tabSettings" class="tab-content" role="region" aria-label="Settings">
+    <div class="page-header">
+      <div><h1><i class="fas fa-cog" aria-hidden="true"></i> Settings</h1><p class="page-subtitle">School profile, currency, academic session, receipts and users</p></div>
+    </div>
+
+    <div class="settings-card">
+      <h2>School Information</h2>
+      <p class="subtitle">This information appears on receipts and across the portal.</p>
+      <div class="settings-group"><label for="setName">School Name</label><input type="text" id="setName" /></div>
+      <div class="settings-group"><label for="setMotto">Motto / Tagline</label><input type="text" id="setMotto" /></div>
+      <div class="settings-grid">
+        <div class="settings-group"><label for="setPhone">Phone</label><input type="text" id="setPhone" inputmode="tel" autocomplete="tel" /></div>
+        <div class="settings-group"><label for="setEmail">Email</label><input type="email" id="setEmail" inputmode="email" autocomplete="email" /></div>
+        <div class="settings-group"><label for="setAddress">Address</label><input type="text" id="setAddress" autocomplete="street-address" /></div>
+        <div class="settings-group"><label for="setCurrency">Currency</label>
+          <select id="setCurrency">
+            <option value="USD">USD — US Dollar ($)</option>
+            <option value="GHS">GHS — Ghana Cedi (₵)</option>
+            <option value="NGN">NGN — Naira (₦)</option>
+            <option value="KES">KES — Kenyan Shilling (KSh)</option>
+            <option value="ZAR">ZAR — South African Rand (R)</option>
+            <option value="EGP">EGP — Egyptian Pound (E£)</option>
+            <option value="AED">AED — UAE Dirham (د.إ)</option>
+            <option value="SAR">SAR — Saudi Riyal (﷼)</option>
+            <option value="EUR">EUR — Euro (€)</option>
+            <option value="GBP">GBP — Pound (£)</option>
+          </select>
+        </div>
+        <div class="settings-group"><label for="setAcademicYear">Academic Year</label><input type="text" id="setAcademicYear" placeholder="e.g. 2025/2026" /></div>
+        <div class="settings-group"><label for="setTerm">Current Term</label>
+          <select id="setTerm">
+            <option>First Term</option><option>Second Term</option><option>Third Term</option>
+          </select>
+        </div>
+        <div class="settings-group"><label for="setReceiptFooter">Receipt Footer Note</label><input type="text" id="setReceiptFooter" /></div>
+      </div>
+      <div class="settings-group">
+        <label for="logoUploadInput">School Logo</label>
+        <div class="help-text">Square image recommended. Shown on the sidebar and receipts.</div>
+        <div class="logo-upload-area" id="logoUploadArea">
+          <img class="logo-preview" id="logoPreview" src="" style="display:none;" alt="School logo preview" />
+          <span class="upload-icon" aria-hidden="true"><i class="fas fa-cloud-upload-alt"></i></span>
+          <div class="upload-text">Click or drag to upload a logo</div>
+          <input type="file" id="logoUploadInput" accept="image/*" aria-label="Upload school logo" />
+        </div>
+      </div>
+      <div class="settings-group"><label for="setColor">Theme Colour</label>
+        <div class="color-input-wrapper"><input type="color" id="setColor" /><span class="color-hex" id="colorHex">#0f766e</span></div>
+        <div class="help-text">Change this colour and the entire system (sidebar, buttons, headings) will recolour automatically.</div>
+      </div>
+      <div class="settings-actions">
+        <button class="btn-save" id="saveSettingsBtn"><i class="fas fa-save" aria-hidden="true"></i> Save Settings</button>
+        <button class="btn-reset" id="resetSettingsBtn"><i class="fas fa-undo" aria-hidden="true"></i> Reset Defaults</button>
+      </div>
+    </div>
+
+    <!-- GLOBAL FEE TYPES -->
+    <div class="settings-card mt-24">
+      <h2>💰 Global Fee Types</h2>
+      <p class="subtitle">These fee types will automatically appear for every student when you admit them or edit their fees.</p>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 16px; align-items: center;">
+        <input type="text" id="newGlobalFeeType" placeholder="e.g. Uniform, Exam Fee, PTA Dues" style="flex: 1; padding: 10px 14px; border: 1px solid #e2ebe9; border-radius: 10px; font-family: inherit; font-size: 0.9rem;" />
+        <button class="btn-save" id="addGlobalFeeTypeBtn" style="background: #2980b9; white-space: nowrap; padding: 10px 20px;"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      
+      <div id="globalFeeTypesList" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+    </div>
+
+    <!-- GRADE BOUNDARIES -->
+    <div class="settings-card mt-24">
+      <h2>📊 Grade Boundaries</h2>
+      <p class="subtitle">Customize the percentage thresholds for each grade. Grades are assigned based on the minimum percentage.</p>
+      
+      <div class="grade-boundaries-grid">
+        <div class="settings-group">
+          <label for="gradeA">Grade A (min %)</label>
+          <input type="number" id="gradeA" min="0" max="100" step="1" />
+        </div>
+        <div class="settings-group">
+          <label for="gradeB">Grade B (min %)</label>
+          <input type="number" id="gradeB" min="0" max="100" step="1" />
+        </div>
+        <div class="settings-group">
+          <label for="gradeC">Grade C (min %)</label>
+          <input type="number" id="gradeC" min="0" max="100" step="1" />
+        </div>
+        <div class="settings-group">
+          <label for="gradeD">Grade D (min %)</label>
+          <input type="number" id="gradeD" min="0" max="100" step="1" />
+        </div>
+        <div class="settings-group">
+          <label for="gradeF">Grade F (min %)</label>
+          <input type="number" id="gradeF" min="0" max="100" step="1" />
+        </div>
+      </div>
+
+      <div class="modal-hint">💡 Ensure the values are in descending order (e.g., A > B > C > D > F).</div>
+      
+      <div class="settings-actions">
+        <button class="btn-save" id="saveGradeBtn" style="background: #2980b9;"><i class="fas fa-save" aria-hidden="true"></i> Save Grade Boundaries</button>
+      </div>
+    </div>
+
+    <div class="settings-card mt-24">
+      <h2>Users &amp; Roles</h2>
+      <p class="subtitle">Each user sees only the modules their role allows.</p>
+      <div class="settings-grid">
+        <div class="settings-group"><label for="newUserName">Full Name</label><input type="text" id="newUserName" placeholder="e.g. Ustadh Ibrahim" autocomplete="name" /></div>
+        <div class="settings-group"><label for="newUserUsername">Username</label><input type="text" id="newUserUsername" placeholder="e.g. ibrahim" autocapitalize="none" spellcheck="false" /></div>
+        <div class="settings-group"><label for="newUserPassword">Password</label><input type="text" id="newUserPassword" placeholder="min 6 characters" /></div>
+        <div class="settings-group"><label for="newUserRole">Role</label>
+          <select id="newUserRole">
+            <option value="admin">Administrator</option>
+            <option value="principal">Principal</option>
+            <option value="registrar">Registrar</option>
+            <option value="accountant">Accountant</option>
+            <option value="teacher">Teacher</option>
+          </select>
+        </div>
+      </div>
+      <div class="settings-actions"><button class="btn-save btn-purple" id="addUserBtn"><i class="fas fa-user-plus" aria-hidden="true"></i> Add User</button></div>
+      <div class="table-card mt-16">
+        <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Actions</th></tr></thead><tbody id="usersTbody"></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="settings-card mt-24">
+      <h2>🔐 Change Password</h2>
+      <p class="subtitle">Update the password for your account. You need to enter your current password to confirm.</p>
+      <div class="settings-group">
+        <label for="pwCurrent">Current Password</label>
+        <input type="password" id="pwCurrent" placeholder="Enter your current password" autocomplete="current-password" />
+      </div>
+      <div class="settings-grid">
+        <div class="settings-group">
+          <label for="pwNew">New Password</label>
+          <input type="password" id="pwNew" placeholder="At least 6 characters" autocomplete="new-password" />
+        </div>
+        <div class="settings-group">
+          <label for="pwConfirm">Confirm New Password</label>
+          <input type="password" id="pwConfirm" placeholder="Repeat new password" autocomplete="new-password" />
+        </div>
+      </div>
+      <div class="settings-actions">
+        <button class="btn-save btn-purple" id="savePasswordBtn"><i class="fas fa-key" aria-hidden="true"></i> Update Password</button>
+        <button class="btn-reset" id="clearPasswordBtn"><i class="fas fa-eraser" aria-hidden="true"></i> Clear</button>
+      </div>
+    </div>
+
+    <div class="settings-card mt-24">
+      <h2>Backup &amp; Restore</h2>
+      <p class="subtitle">Download all school data, or restore from a previous backup file.</p>
+      <div class="settings-grid">
+        <div class="backup-box">
+          <div class="backup-icon green" aria-hidden="true"><i class="fas fa-download"></i></div>
+          <h3>Download Backup</h3>
+          <p>Save a complete JSON copy of all school data.</p>
+          <button class="btn-save btn-green btn-block" id="downloadBackupBtn"><i class="fas fa-file-download" aria-hidden="true"></i> Download Backup</button>
+        </div>
+        <div class="backup-box">
+          <div class="backup-icon blue" aria-hidden="true"><i class="fas fa-upload"></i></div>
+          <h3>Restore Backup</h3>
+          <p><strong class="text-danger">⚠️ Replaces all current data.</strong></p>
+          <button class="btn-save btn-blue btn-block" id="restoreBackupBtn"><i class="fas fa-file-upload" aria-hidden="true"></i> Select File</button>
+          <input type="file" id="restoreFileInput" accept=".json" class="visually-hidden" aria-label="Select backup file" />
+        </div>
+      </div>
+      <div id="restorePreview" class="restore-preview">
+        <h4>📋 Backup Contents</h4>
+        <div id="restorePreviewContent"></div>
+        <div class="settings-actions">
+          <button class="btn-save btn-red" id="confirmRestoreBtn"><i class="fas fa-triangle-exclamation" aria-hidden="true"></i> Restore Now</button>
+          <button class="btn-reset" id="cancelRestoreBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-card mt-24">
+      <h2>Danger Zone</h2>
+      <p class="subtitle">Permanently clear all school data from this device.</p>
+      <button class="btn-save btn-red" id="wipeDataBtn"><i class="fas fa-trash" aria-hidden="true"></i> Erase All Data</button>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<!-- ═══════════ MODALS ═══════════ -->
+
+<!-- STUDENT -->
+<div id="studentModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="studentModalTitle">
+  <div class="modal-card">
+    <h2 id="studentModalTitle">Admit Student</h2>
+    <input type="hidden" id="studentId" />
+    <label class="sr-only" for="stuName">Full name</label>
+    <input type="text" id="stuName" placeholder="Full name" autocomplete="name" />
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="stuCode">Student ID</label>
+        <input type="text" id="stuCode" placeholder="Student ID (auto if blank)" />
+      </div>
+      <div>
+        <label class="sr-only" for="stuGender">Gender</label>
+        <select id="stuGender"><option>Male</option><option>Female</option></select>
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="stuDob">Date of birth</label>
+        <input type="date" id="stuDob" />
+      </div>
+      <div>
+        <label class="sr-only" for="stuClass">Class</label>
+        <select id="stuClass"><option value="">-- Select Class --</option></select>
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="stuGuardian">Guardian name</label>
+        <input type="text" id="stuGuardian" placeholder="Parent / Guardian name" />
+      </div>
+      <div>
+        <label class="sr-only" for="stuGuardianPhone">Guardian phone</label>
+        <input type="text" id="stuGuardianPhone" placeholder="Guardian phone" inputmode="tel" autocomplete="tel" />
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="stuFee">Total fee payable</label>
+        <input type="number" id="stuFee" placeholder="Total fee payable (auto)" step="0.01" min="0" inputmode="decimal" readonly class="field-readonly" />
+      </div>
+      <div>
+        <label class="sr-only" for="stuAdmission">Admission date</label>
+        <input type="date" id="stuAdmission" />
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <label class="fee-structure-label" for="addFeeRowBtn">
+        <span>Fee Breakdown (add each fee type)</span>
+        <button type="button" class="fs-add-btn" id="addFeeRowBtn"><i class="fas fa-plus" aria-hidden="true"></i> Add Fee Type</button>
+      </label>
+      <div class="fee-structure-editor" id="feeStructureEditor"></div>
+    </div>
+
+    <label class="sr-only" for="stuAddress">Home address</label>
+    <input type="text" id="stuAddress" placeholder="Home address" autocomplete="street-address" />
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="stuStatus">Status</label>
+        <select id="stuStatus"><option>Active</option><option>Inactive</option><option>Graduated</option><option>Transferred</option></select>
+      </div>
+      <div>
+        <label class="sr-only" for="stuEmail">Email</label>
+        <input type="email" id="stuEmail" placeholder="Email (optional)" inputmode="email" autocomplete="email" />
+      </div>
+    </div>
+    <label class="sr-only" for="stuNotes">Notes</label>
+    <textarea id="stuNotes" placeholder="Notes (optional)"></textarea>
+    <div class="modal-hint">💡 Add each fee type (Tuition, Feeding, Transport...). The Total Fee is calculated automatically.</div>
+    <div class="modal-buttons">
+      <button class="cancel-btn" data-close="studentModal">Cancel</button>
+      <button class="save-btn" id="saveStudentBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLASS -->
+<div id="classModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="classModalTitle">
+  <div class="modal-card">
+    <h2 id="classModalTitle">Add Class</h2>
+    <input type="hidden" id="classId" />
+    <label class="sr-only" for="className">Class name</label>
+    <input type="text" id="className" placeholder="Class name (e.g. Primary 1)" />
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="classLevel">Level</label>
+        <input type="text" id="classLevel" placeholder="Level (e.g. Primary)" />
+      </div>
+      <div>
+        <label class="sr-only" for="classSection">Section</label>
+        <input type="text" id="classSection" placeholder="Section (e.g. A)" />
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="classTeacher">Class teacher</label>
+        <select id="classTeacher"><option value="">-- Class Teacher --</option></select>
+      </div>
+      <div>
+        <label class="sr-only" for="classCapacity">Capacity</label>
+        <input type="number" id="classCapacity" placeholder="Capacity" min="0" step="1" inputmode="numeric" />
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="classFee">Termly fee</label>
+        <input type="number" id="classFee" placeholder="Termly fee" step="0.01" min="0" inputmode="decimal" />
+      </div>
+      <div>
+        <label class="sr-only" for="classStatus">Status</label>
+        <select id="classStatus"><option>Active</option><option>Inactive</option></select>
+      </div>
+    </div>
+    <div class="modal-buttons">
+      <button class="cancel-btn" data-close="classModal">Cancel</button>
+      <button class="save-btn" id="saveClassBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUBJECT -->
+<div id="subjectModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="subjectModalTitle">
+  <div class="modal-card">
+    <h2 id="subjectModalTitle">Add Subject</h2>
+    <input type="hidden" id="subjectId" />
+    <label class="sr-only" for="subjectName">Subject name</label>
+    <input type="text" id="subjectName" placeholder="Subject name (e.g. Mathematics)" />
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="subjectCode">Subject code</label>
+        <input type="text" id="subjectCode" placeholder="Subject code (e.g. MTH)" />
+      </div>
+      <div>
+        <label class="sr-only" for="subjectTeacher">Teacher</label>
+        <select id="subjectTeacher"><option value="">-- Teacher (optional) --</option></select>
+      </div>
+    </div>
+    <label class="sr-only" for="subjectStatus">Status</label>
+    <select id="subjectStatus"><option>Active</option><option>Inactive</option></select>
+    <div class="modal-hint">💡 Subjects are now <strong>shared across all classes</strong>. Add each subject once here and it will automatically appear in every class's exam dropdown.</div>
+    <div class="modal-buttons">
+      <button class="cancel-btn" data-close="subjectModal">Cancel</button>
+      <button class="save-btn" id="saveSubjectBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- STAFF -->
+<div id="staffModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="staffModalTitle">
+  <div class="modal-card">
+    <h2 id="staffModalTitle">Add Staff</h2>
+    <input type="hidden" id="staffId" />
+    <label class="sr-only" for="staffName">Full name</label>
+    <input type="text" id="staffName" placeholder="Full name" autocomplete="name" />
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="staffCode">Staff ID</label>
+        <input type="text" id="staffCode" placeholder="Staff ID (auto if blank)" />
+      </div>
+      <div>
+        <label class="sr-only" for="staffGender">Gender</label>
+        <select id="staffGender"><option>Male</option><option>Female</option></select>
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="staffPosition">Position</label>
+        <input type="text" id="staffPosition" placeholder="Position (Teacher, Accountant...)" />
+      </div>
+      <div>
+        <label class="sr-only" for="staffDepartment">Department</label>
+        <input type="text" id="staffDepartment" placeholder="Department" />
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="staffPhone">Phone number</label>
+        <input type="text" id="staffPhone" placeholder="Phone number" inputmode="tel" autocomplete="tel" />
+      </div>
+      <div>
+        <label class="sr-only" for="staffEmail">Email</label>
+        <input type="email" id="staffEmail" placeholder="Email" inputmode="email" autocomplete="email" />
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="staffSalary">Monthly salary</label>
+        <input type="number" id="staffSalary" placeholder="Monthly salary" step="0.01" min="0" inputmode="decimal" />
+      </div>
+      <div>
+        <label class="sr-only" for="staffJoined">Date joined</label>
+        <input type="date" id="staffJoined" />
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="staffQualification">Qualification</label>
+        <input type="text" id="staffQualification" placeholder="Qualification" />
+      </div>
+      <div>
+        <label class="sr-only" for="staffStatus">Status</label>
+        <select id="staffStatus"><option>Active</option><option>Inactive</option></select>
+      </div>
+    </div>
+    <label class="sr-only" for="staffAddress">Address</label>
+    <input type="text" id="staffAddress" placeholder="Address" autocomplete="street-address" />
+    <div class="modal-buttons">
+      <button class="cancel-btn" data-close="staffModal">Cancel</button>
+      <button class="save-btn" id="saveStaffBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXAM -->
+<div id="examModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="examModalTitle">
+  <div class="modal-card">
+    <h2 id="examModalTitle">Add Exam</h2>
+    <input type="hidden" id="examId" />
+    <label class="sr-only" for="examName">Exam name</label>
+    <input type="text" id="examName" placeholder="Exam name (e.g. First Term Examination)" />
+
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="examClass">Class</label>
+        <select id="examClass"><option value="">-- Select Class --</option></select>
+      </div>
+      <div>
+        <label class="sr-only" for="examSubject">Subject</label>
+        <select id="examSubject"><option value="">-- Select Subject --</option></select>
+      </div>
+    </div>
+
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="examTerm">Term</label>
+        <select id="examTerm"><option>First Term</option><option>Second Term</option><option>Third Term</option></select>
+      </div>
+      <div>
+        <label class="sr-only" for="examYear">Academic year</label>
+        <input type="text" id="examYear" placeholder="Academic year" />
+      </div>
+    </div>
+    
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="examStart">Date</label>
+        <input type="date" id="examStart" />
+      </div>
+      <div>
+        <label class="sr-only" for="examMax">Max Score</label>
+        <input type="number" id="examMax" placeholder="Max Score (e.g. 100)" min="1" step="1" inputmode="numeric" />
+      </div>
+    </div>
+    
+    <label class="sr-only" for="examStatus">Status</label>
+    <select id="examStatus"><option>Upcoming</option><option>Ongoing</option><option>Completed</option></select>
+    <div class="modal-hint">💡 Exam status is automatic — <strong>Ongoing</strong> on the start date, <strong>Completed</strong> when all students are graded.</div>
+    <div class="modal-buttons">
+      <button class="cancel-btn" data-close="examModal">Cancel</button>
+      <button class="save-btn" id="saveExamBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXPENSE -->
+<div id="expenseModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
+  <div class="modal-card">
+    <h2 id="expenseModalTitle">Record Expense</h2>
+    <input type="hidden" id="expId" />
+    <label class="sr-only" for="expTitle">Expense title</label>
+    <input type="text" id="expTitle" placeholder="Expense title" />
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="expCategory">Category</label>
+        <input type="text" id="expCategory" placeholder="Category" list="expenseCategoryList" />
+      </div>
+      <div>
+        <label class="sr-only" for="expAmount">Amount</label>
+        <input type="number" id="expAmount" placeholder="Amount" step="0.01" min="0" inputmode="decimal" />
+      </div>
+    </div>
+    <datalist id="expenseCategoryList"></datalist>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="expDate">Date</label>
+        <input type="date" id="expDate" />
+      </div>
+      <div>
+        <label class="sr-only" for="expMethod">Payment method</label>
+        <select id="expMethod"><option>Cash</option><option>Bank Transfer</option><option>Mobile Money</option><option>Cheque</option></select>
+      </div>
+    </div>
+    <div class="double-input">
+      <div>
+        <label class="sr-only" for="expRef">Reference</label>
+        <input type="text" id="expRef" placeholder="Receipt / reference number" />
+      </div>
+      <div>
+        <label class="sr-only" for="expBy">Recorded by</label>
+        <input type="text" id="expBy" placeholder="Recorded by" />
+      </div>
+    </div>
+    <label class="sr-only" for="expDesc">Description</label>
+    <textarea id="expDesc" placeholder="Description (optional)"></textarea>
+    <div class="modal-buttons">
+      <button class="cancel-btn" data-close="expenseModal">Cancel</button>
+      <button class="save-btn" id="saveExpenseBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- RECEIPT -->
+<div id="receiptModal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Fee receipt">
+  <div class="modal-card receipt-card">
+    <div id="receiptContent"></div>
+    <div class="modal-buttons no-print">
+      <button class="cancel-btn" data-close="receiptModal">Close</button>
+      <button class="save-btn btn-dark" id="printReceiptBtn"><i class="fas fa-print" aria-hidden="true"></i> Print</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ═══════════ SCRIPTS ═══════════ -->
+<script src="script.js"></script>
+<script src="supabase-bridge.js"></script>
+</body>
+</html>
